@@ -16,3 +16,5 @@ Peter's Pen.
 
 ![Image](img/penna.jpg)
 Idea di come montare il sensore di pressione sulla penna (la parte arancione rappresenta il gambo del sensione di pressione)
+![Image](img/penna_completa.jpg)
+Idea di come inserire inserire i componenti nella penna
