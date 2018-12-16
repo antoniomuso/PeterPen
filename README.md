@@ -10,4 +10,9 @@ Peter's Pen.
 - Sensore di pressione
 - Penna fatta mediante stampante 3D
 - Bluetooth
-- 
+
+
+### Image
+
+![Image](img/penna.jpg)
+Idea di come montare il sensore di pressione sulla penna (la parte arancione rappresenta il gambo del sensione di pressione)
