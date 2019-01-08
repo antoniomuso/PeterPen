@@ -11,16 +11,21 @@ const float MPU_ACCL_2_SCALE = 16384.0;
 const float MPU_ACCL_4_SCALE = 8192.0;
 const float MPU_ACCL_8_SCALE = 4096.0;
 const float MPU_ACCL_16_SCALE = 2048.0;
+
+// Threshold del sensore di pressione per rilevare la scrittura 
 const int TH_FORCE = 100;
+// Delay del loop principale
 const int LOOP_DELAY = 10;
+// Tempo di attesa prima di poter riscrivere un altra parola
 const int TIME_WAIT = 2000;
 // Tempo di scrittura massima di una parola
 const int MAX_TIME = 10000;
 
+// Enum per lo status della penna
 enum PEN_STATUS {
-  WRITING,
-  READY,
-  ERROR
+  WRITING, // La penna sta scrivendo il led è spento
+  READY, // La penna è pronta per scrivere una parola nuova il led è acceso
+  ERROR // l'utente ha tenuto la penna in scrittura per più di MAX_TIME il led lampeggia
 };
 
 
@@ -102,6 +107,11 @@ void setStatus(PEN_STATUS status) {
 
 }
 
+void sendData()  {
+  // vanno inviati counter_writing e LOOP_DELAY 
+
+}; 
+
 void loop()
 {
   // Read data of pression sensor from pin A0
@@ -125,7 +135,11 @@ void loop()
     counter_writing = 0;
   } else {
     counter_led++;
-    if (counter_led == TIME_WAIT/LOOP_DELAY) {
+    counter_writing++;
+    
+    if (counter_led == TIME_WAIT/LOOP_DELAY || (counter_writing * LOOP_DELAY) >= MAX_TIME) {
+      counter_writing -= counter_led;
+      sendData();
       setStatus(READY);
       counter_writing = 0;
     }
