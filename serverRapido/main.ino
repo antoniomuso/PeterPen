@@ -11,6 +11,18 @@ const float MPU_ACCL_2_SCALE = 16384.0;
 const float MPU_ACCL_4_SCALE = 8192.0;
 const float MPU_ACCL_8_SCALE = 4096.0;
 const float MPU_ACCL_16_SCALE = 2048.0;
+const int TH_FORCE = 100;
+const int LOOP_DELAY = 10;
+const int TIME_WAIT = 2000;
+// Tempo di scrittura massima di una parola
+const int MAX_TIME = 10000;
+
+enum PEN_STATUS {
+  WRITING,
+  READY,
+  ERROR
+};
+
 
 struct rawdata
 {
@@ -23,6 +35,7 @@ struct rawdata
   int16_t GyZ;
 };
 
+/**
 struct scaleddata
 {
   float AcX;
@@ -33,36 +46,95 @@ struct scaleddata
   float GyY;
   float GyZ;
 };
+*/
 
 bool checkI2c(byte addr);
 void mpu6050Begin(byte addr);
 rawdata mpu6050Read(byte addr, bool Debug);
 void setMPU6050scales(byte addr, uint8_t Gyro, uint8_t Accl);
 void getMPU6050scales(byte addr, uint8_t &Gyro, uint8_t &Accl);
-scaleddata convertRawToScaled(byte addr, rawdata data_in, bool Debug);
-int fsReading;
+//scaleddata convertRawToScaled(byte addr, rawdata data_in, bool Debug);
+
+// variable
+int16_t pressionSensor;
+rawdata next_sample;
+bool isOpen = true;
+int counter_led = 0;
+int counter_writing = 0;
+PEN_STATUS status_pen = READY;
+
 
 void setup()
 {
   Wire.begin();
   Serial.begin(115200);
-  //pinMode(LEDpin, OUTPUT);
+  pinMode(0, OUTPUT);
 
   mpu6050Begin(MPU_addr);
 }
 
+void blink() {
+  bool stat_led = true;
+  for (int i = 0; i < 20; i++) {
+    if (stat_led) {
+      stat_led = false;
+      digitalWrite(0,LOW);
+    } else {
+      stat_led = true;
+      digitalWrite(0,HIGH);
+    }
+    delay(200);
+  }
+}
+
+void setStatus(PEN_STATUS status) {
+  if (status == READY) {
+    digitalWrite(0, HIGH);
+    status = READY;
+  } else if (status == WRITING) {
+    digitalWrite(0, LOW);
+    status = WRITING;
+  } else {
+    status = ERROR;
+    blink();
+    status = READY;
+  }
+
+}
+
 void loop()
 {
-  fsReading = analogRead(0);
+  // Read data of pression sensor from pin A0
+  pressionSensor = analogRead(0);
 
-  rawdata next_sample;
+  // Accelerometer
   setMPU6050scales(MPU_addr, 0b00000000, 0b00010000);
   next_sample = mpu6050Read(MPU_addr, false);
-  convertRawToScaled(MPU_addr, next_sample, false);
+  uint8_t gyro;
+  uint8_t accl;
+  getMPU6050scales(MPU_addr, gyro, accl);
+  //convertRawToScaled(MPU_addr, next_sample, false);
 
-  Serial.print(fsReading);
+  if (pressionSensor > TH_FORCE && (counter_writing * LOOP_DELAY) < MAX_TIME ) {
+    setStatus(WRITING);
+    counter_led = 0;
+    counter_writing++;
+  } else if (pressionSensor > TH_FORCE) {
+    setStatus(ERROR);
+    counter_led = 0;
+    counter_writing = 0;
+  } else {
+    counter_led++;
+    if (counter_led == TIME_WAIT/LOOP_DELAY) {
+      setStatus(READY);
+      counter_writing = 0;
+    }
+  }
+
+
+  Serial.print(pressionSensor);
   Serial.print("\n");
-  delay(2500); // Wait 5 seconds and scan again
+  delay(LOOP_DELAY); // Wait 5 seconds and scan again
 }
 
 void mpu6050Begin(byte addr)
@@ -152,6 +224,9 @@ void setMPU6050scales(byte addr, uint8_t Gyro, uint8_t Accl)
   Wire.write(Gyro); // Self Tests Off and set Gyro FS to 250
   Wire.write(Accl); // Self Tests Off and set Accl FS to 8g
   Wire.endTransmission(true);
+  Serial.print(Gyro);
+  Serial.print(Accl);
+  Serial.print("\n");
 }
 
 void getMPU6050scales(byte addr, uint8_t &Gyro, uint8_t &Accl)
@@ -162,8 +237,11 @@ void getMPU6050scales(byte addr, uint8_t &Gyro, uint8_t &Accl)
   Wire.requestFrom(addr, 2, true); // request a total of 14 registers
   Gyro = (Wire.read() & (bit(3) | bit(4))) >> 3;
   Accl = (Wire.read() & (bit(3) | bit(4))) >> 3;
+  Serial.print(Gyro);
+  Serial.print(Accl);
 }
 
+/*
 scaleddata convertRawToScaled(byte addr, rawdata data_in, bool Debug)
 {
 
@@ -254,6 +332,7 @@ scaleddata convertRawToScaled(byte addr, rawdata data_in, bool Debug)
   default:
     break;
   }
+  
   values.AcX = (float)data_in.AcX / scale_value;
   values.AcY = (float)data_in.AcY / scale_value;
   values.AcZ = (float)data_in.AcZ / scale_value;
@@ -282,4 +361,4 @@ scaleddata convertRawToScaled(byte addr, rawdata data_in, bool Debug)
   }
 
   return values;
-}
+}*/
