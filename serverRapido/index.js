@@ -10,7 +10,7 @@ var server = net.createServer(function(c) { //'connection' listener
   })
 
   let file_name = Date.now().toString() + ".json"
-  let writeStream = fs.createWriteStream(`file/${file_name}`)
+  let writeStream = fs.createWriteStream(`out/${file_name}`)
   c.pipe(writeStream)
 
   
