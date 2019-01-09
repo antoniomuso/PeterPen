@@ -25,7 +25,7 @@ const int MAX_TIME = 10000;
 const int ARRAY_DIM = MAX_TIME / LOOP_DELAY;
 const bool DEBUG = false;
 
-const char RAWDATA_JSON_PROTOTYPE[] = "{\"AcX\": %" PRId16 ",\"AcY\": %" PRId16 ",\"AcZ\": %" PRId16 ",\"Pres\": %" PRId16 ",\"GyX\": %" PRId16 ",\"GyY\": %" PRId16 ",\"GyZ\": %" PRId16 "}"; 
+const char RAWDATA_JSON_PROTOTYPE[] = "{\"AcX\": %" PRId16 ",\"AcY\": %" PRId16 ",\"AcZ\": %" PRId16 ",\"Pres\": %" PRId16 ",\"GyX\": %" PRId16 ",\"GyY\": %" PRId16 ",\"GyZ\": %" PRId16 "}";
 
 // Enum per lo status della penna
 enum PEN_STATUS
@@ -65,10 +65,11 @@ struct rawdata arr[ARRAY_DIM];
 
 // Dati di connessione
 WiFiClient client;
-const char* host = "192.168.43.242";
+const char *host = "192.168.43.242";
 bool isConnected = false;
 
-void connect () {
+void connect()
+{
   WiFi.begin("HUAWEI P20", "1234abcd");
 
   Serial.print("Connecting");
@@ -81,15 +82,12 @@ void connect () {
 
   Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
+
+  while (!client.connect(host, 8080))
+  {
+    blink();
+  }
   
-  if (client.connect(host, 8080))
-  {
-    isConnected = true;
-  }
-  else
-  {
-    isConnected = false;
-  }
 }
 
 void setup()
@@ -98,7 +96,6 @@ void setup()
   Wire.begin();
   Serial.begin(9600);
   pinMode(0, OUTPUT);
-  
 
   mpu6050Begin(MPU_addr);
   connect();
@@ -148,10 +145,13 @@ void sendData()
 {
   Serial.println("Sending data...");
   // vanno inviati counter_writing e LOOP_DELAY
-  for (int i = 0; i < 2; i++)
+  client.print("[");
+  for (int i = 0; i < counter_writing; i++)
   {
-    client.printf(RAWDATA_JSON_PROTOTYPE, arr[i].AcX, arr[i].AcY, arr[i].AcZ, arr[i].pressure, arr[i].GyX,arr[i].GyY,arr[i].GyZ);
+    client.printf(RAWDATA_JSON_PROTOTYPE, arr[i].AcX, arr[i].AcY, arr[i].AcZ, arr[i].pressure, arr[i].GyX, arr[i].GyY, arr[i].GyZ);
+    client.print(",");
   }
+  client.println("]");
 };
 
 void readData(byte addr)
@@ -174,9 +174,9 @@ void readData(byte addr)
   arr[counter_writing].GyY = (Wire.read() << 8 | Wire.read());
   arr[counter_writing].GyZ = (Wire.read() << 8 | Wire.read());
 
-  if (DEBUG && counter_writing%200 == 0)
+  if (DEBUG && counter_writing % 200 == 0)
   {
-    
+
     Serial.println(arr[counter_writing].AcX); // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)
     Serial.println(arr[counter_writing].AcY); // 0x3D (ACCEL_YOUT_H) & 0x3E (ACCEL_YOUT_L)
     Serial.println(arr[counter_writing].AcZ); // 0x3F (ACCEL_ZOUT_H) & 0x40 (ACCEL_ZOUT_L)
@@ -235,7 +235,7 @@ void loop()
       counter_writing = 0;
       counter_led = 0;
     }
-  } 
+  }
 
   //Serial.print(pressionSensor);
   //Serial.print("\n");

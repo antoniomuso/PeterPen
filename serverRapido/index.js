@@ -1,14 +1,18 @@
 let net = require('net')
+let fs = require('fs')
 
 var server = net.createServer(function(c) { //'connection' listener
+  let data_buff = []
+  let inRead = false
   console.log('server connected');
   c.on('end', function() {
     console.log('server disconnected');
   })
 
-  c.on('data', (data) => {
-    console.log(""+data)
-  })
+  let file_name = Date.now().toString() + ".json"
+  let writeStream = fs.createWriteStream(`file/${file_name}`)
+  c.pipe(writeStream)
+
   
   c.write('hello \r\n');
   //c.pipe(c);
