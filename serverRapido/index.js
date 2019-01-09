@@ -9,7 +9,7 @@ var server = net.createServer(function(c) { //'connection' listener
   c.on('data', (data) => {
     console.log(""+data)
   })
-
+  
   c.write('hello \r\n');
   //c.pipe(c);
 });

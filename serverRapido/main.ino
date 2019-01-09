@@ -14,18 +14,18 @@ const float MPU_ACCL_8_SCALE = 4096.0;
 const float MPU_ACCL_16_SCALE = 2048.0;
 
 // Threshold del sensore di pressione per rilevare la scrittura
-const int TH_FORCE = 100;
+const int TH_FORCE = 200;
 // Delay del loop principale
 const int LOOP_DELAY = 10;
 // Tempo di attesa prima di poter riscrivere un altra parola
-const int TIME_WAIT = 2000;
+const int _TIME_WAIT = 2000;
 // Tempo di scrittura massima di una parola
 const int MAX_TIME = 10000;
 // Dimensione massima dell array dei dati
 const int ARRAY_DIM = MAX_TIME / LOOP_DELAY;
-const bool DEBUG = true;
+const bool DEBUG = false;
 
-const char RAWDATA_JSON_PROTOTYPE[] = "{\"AcX\": %"PRId16",\"AcY\": %"PRId16",\"AcZ\": %"PRId16",\"Pres\": %"PRId16",\"GyX\": %"PRId16",\"GyY\": %"PRId16",\"GyZ\": %"PRId16"}"; 
+const char RAWDATA_JSON_PROTOTYPE[] = "{\"AcX\": %" PRId16 ",\"AcY\": %" PRId16 ",\"AcZ\": %" PRId16 ",\"Pres\": %" PRId16 ",\"GyX\": %" PRId16 ",\"GyY\": %" PRId16 ",\"GyZ\": %" PRId16 "}"; 
 
 // Enum per lo status della penna
 enum PEN_STATUS
@@ -81,6 +81,7 @@ void connect () {
 
   Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
+  
   if (client.connect(host, 8080))
   {
     isConnected = true;
@@ -100,7 +101,7 @@ void setup()
   
 
   mpu6050Begin(MPU_addr);
-  //connect();
+  connect();
 }
 
 // Effettua il lampeggiamento del led
@@ -128,28 +129,28 @@ void setStatus(PEN_STATUS status)
   if (status == READY)
   {
     digitalWrite(0, HIGH);
-    status = READY;
+    status_pen = READY;
   }
   else if (status == WRITING)
   {
     digitalWrite(0, LOW);
-    status = WRITING;
+    status_pen = WRITING;
   }
   else
   {
-    status = ERROR;
+    status_pen = ERROR;
     blink();
-    status = READY;
+    status_pen = READY;
   }
 }
 
 void sendData()
 {
-
+  Serial.println("Sending data...");
   // vanno inviati counter_writing e LOOP_DELAY
-  for (int i = 0; i < 10; i++)
+  for (int i = 0; i < 2; i++)
   {
-
+    client.printf(RAWDATA_JSON_PROTOTYPE, arr[i].AcX, arr[i].AcY, arr[i].AcZ, arr[i].pressure, arr[i].GyX,arr[i].GyY,arr[i].GyZ);
   }
 };
 
@@ -162,7 +163,7 @@ void readData(byte addr)
   Wire.beginTransmission(addr);
   Wire.write(0x3B); // starting with register 0x3B (ACCEL_XOUT_H)
   Wire.endTransmission(false);
-  Wire.requestFrom(addr, 14, true); // request a total of 14 registers
+  Wire.requestFrom(addr, (size_t)14, true); // request a total of 14 registers
   rawdata data;
 
   arr[counter_writing].AcX = (Wire.read() << 8 | Wire.read());
@@ -212,15 +213,21 @@ void loop()
     counter_led = 0;
     counter_writing = 0;
   }
-  else
+  else if (status_pen != READY)
   {
+    Serial.println("Dentro elseif");
     setMPU6050scales(MPU_addr, 0b00000000, 0b00010000);
     readData(MPU_addr);
     counter_led++;
     counter_writing++;
 
-    if (counter_led == TIME_WAIT / LOOP_DELAY || (counter_writing * LOOP_DELAY) >= MAX_TIME)
+    if (counter_led == _TIME_WAIT / LOOP_DELAY || (counter_writing * LOOP_DELAY) >= MAX_TIME)
     {
+      Serial.print("Counter Led: ");
+      Serial.println(counter_led);
+      Serial.print("Counter writing: ");
+      Serial.println(counter_writing);
+
       counter_writing -= counter_led;
       sendData();
       setStatus(READY);
@@ -228,7 +235,7 @@ void loop()
       counter_writing = 0;
       counter_led = 0;
     }
-  }
+  } 
 
   //Serial.print(pressionSensor);
   //Serial.print("\n");
@@ -287,7 +294,7 @@ void getMPU6050scales(byte addr, uint8_t &Gyro, uint8_t &Accl)
   Wire.beginTransmission(addr);
   Wire.write(0x1B); // starting with register 0x3B (ACCEL_XOUT_H)
   Wire.endTransmission(false);
-  Wire.requestFrom(addr, 2, true); // request a total of 14 registers
+  Wire.requestFrom(addr, (size_t)2, true); // request a total of 14 registers
   Gyro = (Wire.read() & (bit(3) | bit(4))) >> 3;
   Accl = (Wire.read() & (bit(3) | bit(4))) >> 3;
 }
