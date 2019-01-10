@@ -11,12 +11,20 @@ var server = net.createServer(function(c) { //'connection' listener
   c.on('end', function() {
     console.log('server disconnected');
   })
-
+  
   let file_name = Date.now().toString() + ".json"
   let writeStream = fs.createWriteStream(`out/${file_name}`)
   writeStream.write("[")
+
+  c.setTimeout(1000 * 60 * 3,() => {
+    fs.appendFile(`out/${file_name}`,"]",(err) => {
+      if (err) console.err(`File name ${file_name} error: ${err}`)
+    })
+    c.unpipe()
+    c.end()
+  })
   
-  c.pipe(th2((chunk, enc, callback) => {  
+  c.pipe(th2((chunk, enc, callback) => {    
     for (let i = 0; i < chunk.length; i++) {
       if (chunk[i] == NEW_LINE) {
         chunk[i] = COMMA
@@ -26,6 +34,10 @@ var server = net.createServer(function(c) { //'connection' listener
   })).pipe(writeStream).addListener('finish',() => fs.appendFile(`out/${file_name}`,"]",(err) => {
     if (err) console.err(`File name ${file_name} error: ${err}`)
   }))
+
+  c.on('error', (err) => {
+    if (err) console.log(err)
+  })
 
 });
 server.listen(8080, function() { //'listening' listener

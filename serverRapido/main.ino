@@ -149,7 +149,7 @@ void sendData()
   for (int i = 0; i < counter_writing; i++)
   {
     client.printf(RAWDATA_JSON_PROTOTYPE, arr[i].AcX, arr[i].AcY, arr[i].AcZ, arr[i].pressure, arr[i].GyX, arr[i].GyY, arr[i].GyZ);
-    client.print(",");
+    if (i != counter_writing-1) client.print(",");
   }
   client.println("]");
 };
