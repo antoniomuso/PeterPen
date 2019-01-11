@@ -15,7 +15,7 @@ var server = net.createServer(function(c) { //'connection' listener
   
   let file_name = Date.now().toString() + ".json"
   let file_path = `out/${file_name}`
-  let writeStream = fs.createWriteStream(`out/${file_name}`)
+  let writeStream = fs.createWriteStream(file_path)
   writeStream.write("[")
 
   c.setTimeout(1000 * 60 * 3,() => {
@@ -35,7 +35,7 @@ var server = net.createServer(function(c) { //'connection' listener
       }
     }
     callback(null, chunk)
-  })).pipe(writeStream).addListener('finish',() => fs.appendFile(`out/${file_name}`,"]",(err) => {
+  })).pipe(writeStream).addListener('finish',() => fs.appendFile(file_path,"]",(err) => {
     if (err) console.err(`File name ${file_name} error: ${err}`)
   }))
 
