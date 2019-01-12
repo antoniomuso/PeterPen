@@ -18,7 +18,7 @@ var server = net.createServer(function(c) { //'connection' listener
   let writeStream = fs.createWriteStream(file_path)
   writeStream.write("[")
 
-  c.setTimeout(1000 * 60 * 3,() => {
+  c.setTimeout(1000 * 60 * 5,() => {
     trunc_file(file_path, 1, () => {
       fs.appendFile(file_path,"]",(err) => {
         if (err) console.err(`File name ${file_name} error: ${err}`)
@@ -34,6 +34,7 @@ var server = net.createServer(function(c) { //'connection' listener
         chunk[i] = COMMA
       }
     }
+    c.write('k')
     callback(null, chunk)
   })).pipe(writeStream).addListener('finish',() => fs.appendFile(file_path,"]",(err) => {
     if (err) console.err(`File name ${file_name} error: ${err}`)
