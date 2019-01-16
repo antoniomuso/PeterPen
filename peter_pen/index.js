@@ -18,7 +18,7 @@ var server = net.createServer(function(c) { //'connection' listener
   let writeStream = fs.createWriteStream(file_path)
   writeStream.write("[")
 
-  c.setTimeout(1000 * 60 * 5,() => {
+  c.setTimeout(1000 * 60 * 1,() => {
     trunc_file(file_path, 1, () => {
       fs.appendFile(file_path,"]",(err) => {
         if (err) console.err(`File name ${file_name} error: ${err}`)

@@ -25,7 +25,7 @@ const int MAX_TIME = 10000;
 const int ARRAY_DIM = MAX_TIME / LOOP_DELAY;
 const bool DEBUG = false;
 
-const char RAWDATA_JSON_PROTOTYPE[] = "{\"AcX\": %" PRId16 ",\"AcY\": %" PRId16 ",\"AcZ\": %" PRId16 ",\"Pres\": %" PRId16 ",\"GyX\": %" PRId16 ",\"GyY\": %" PRId16 ",\"GyZ\": %" PRId16 "}";
+const char RAWDATA_JSON_PROTOTYPE[] = "{\"AcX\": %f,\"AcY\": %f,\"AcZ\": %f,\"Pres\": %f,\"GyX\": %f,\"GyY\": %f,\"GyZ\": %f}";
 
 // Enum per lo status della penna
 enum PEN_STATUS
@@ -46,17 +46,28 @@ struct rawdata
   int16_t GyZ;
 };
 
+struct scaleddata
+{
+  float AcX;
+  float AcY;
+  float AcZ;
+  float pressure;
+  float GyX;
+  float GyY;
+  float GyZ;
+};
+
 bool checkI2c(byte addr);
 void mpu6050Begin(byte addr);
-rawdata mpu6050Read(byte addr, bool Debug);
+rawdata mpu6050Read(byte addr);
 void setMPU6050scales(byte addr, uint8_t Gyro, uint8_t Accl);
 void getMPU6050scales(byte addr, uint8_t &Gyro, uint8_t &Accl);
+scaleddata convertRawToScaled(byte addr, rawdata value);
 void blink();
-//scaleddata convertRawToScaled(byte addr, rawdata data_in, bool Debug);
+//scaleddata convertRawToScaled(byte addr, rawdata value, bool Debug);
 
 // variable
 int16_t pressionSensor;
-rawdata next_sample;
 bool isOpen = true;
 int counter_led = 0;
 int counter_writing = 0;
@@ -87,7 +98,6 @@ void connect()
   {
     blink();
   }
-  
 }
 
 void setup()
@@ -148,8 +158,10 @@ void sendData()
   client.print("[");
   for (int i = 0; i < counter_writing; i++)
   {
-    client.printf(RAWDATA_JSON_PROTOTYPE, arr[i].AcX, arr[i].AcY, arr[i].AcZ, arr[i].pressure, arr[i].GyX, arr[i].GyY, arr[i].GyZ);
-    if (i != counter_writing-1) client.print(",");
+    scaleddata data = convertRawToScaled(MPU_addr, arr[i]);
+    client.printf(RAWDATA_JSON_PROTOTYPE, data.AcX, data.AcY, data.AcZ, data.pressure, data.GyX, data.GyY, data.GyZ);
+    if (i != counter_writing - 1)
+      client.print(",");
   }
   client.println("]");
 };
@@ -157,7 +169,7 @@ void sendData()
 void readData(byte addr)
 {
 
-  // This function reads the raw 16-bit data values from
+  // This function reads the raw 16-bit data value from
   // the MPU-6050
 
   Wire.beginTransmission(addr);
@@ -203,6 +215,7 @@ void loop()
     setStatus(WRITING);
     setMPU6050scales(MPU_addr, 0b00000000, 0b00010000);
     readData(MPU_addr);
+
     counter_led = 0;
     counter_writing++;
   }
@@ -297,4 +310,123 @@ void getMPU6050scales(byte addr, uint8_t &Gyro, uint8_t &Accl)
   Wire.requestFrom(addr, (size_t)2, true); // request a total of 14 registers
   Gyro = (Wire.read() & (bit(3) | bit(4))) >> 3;
   Accl = (Wire.read() & (bit(3) | bit(4))) >> 3;
+}
+
+scaleddata convertRawToScaled(byte addr, rawdata value)
+{
+
+  scaleddata data;
+  float scale_value = 0.0;
+  byte Gyro, Accl;
+
+  getMPU6050scales(MPU_addr, Gyro, Accl);
+
+  if (DEBUG)
+  {
+    Serial.print("Gyro Full-Scale = ");
+  }
+
+  switch (Gyro)
+  {
+  case 0:
+    scale_value = MPU_GYRO_250_SCALE;
+    if (DEBUG)
+    {
+      Serial.println("±250 °/s");
+    }
+    break;
+  case 1:
+    scale_value = MPU_GYRO_500_SCALE;
+    if (DEBUG)
+    {
+      Serial.println("±500 °/s");
+    }
+    break;
+  case 2:
+    scale_value = MPU_GYRO_1000_SCALE;
+    if (DEBUG)
+    {
+      Serial.println("±1000 °/s");
+    }
+    break;
+  case 3:
+    scale_value = MPU_GYRO_2000_SCALE;
+    if (DEBUG)
+    {
+      Serial.println("±2000 °/s");
+    }
+    break;
+  default:
+    break;
+  }
+
+  data.GyX = (float)value.GyX / scale_value;
+  data.GyY = (float)value.GyY / scale_value;
+  data.GyZ = (float)value.GyZ / scale_value;
+  data.pressure = (float) value.pressure;
+
+  scale_value = 0.0;
+
+  if (DEBUG)
+  {
+    Serial.print("Accl Full-Scale = ");
+  }
+  switch (Accl)
+  {
+  case 0:
+    scale_value = MPU_ACCL_2_SCALE;
+    if (DEBUG)
+    {
+      Serial.println("±2 g");
+    }
+    break;
+  case 1:
+    scale_value = MPU_ACCL_4_SCALE;
+    if (DEBUG)
+    {
+      Serial.println("±4 g");
+    }
+    break;
+  case 2:
+    scale_value = MPU_ACCL_8_SCALE;
+    if (DEBUG)
+    {
+      Serial.println("±8 g");
+    }
+    break;
+  case 3:
+    scale_value = MPU_ACCL_16_SCALE;
+    if (DEBUG)
+    {
+      Serial.println("±16 g");
+    }
+    break;
+  default:
+    break;
+  }
+  data.AcX = (float)value.AcX / scale_value;
+  data.AcY = (float)value.AcY / scale_value;
+  data.AcZ = (float)value.AcZ / scale_value;
+
+  //value.Tmp = (float)value.Tmp / 340.0 + 36.53;
+
+  if (DEBUG)
+  {
+    Serial.print(" GyX = ");
+    Serial.print(value.GyX);
+    Serial.print(" °/s| GyY = ");
+    Serial.print(value.GyY);
+    Serial.print(" °/s| GyZ = ");
+    Serial.print(value.GyZ);
+    //Serial.print(" °/s| Tmp = ");
+    //Serial.print(value.Tmp);
+    Serial.print(" °C| AcX = ");
+    Serial.print(value.AcX);
+    Serial.print(" g| AcY = ");
+    Serial.print(value.AcY);
+    Serial.print(" g| AcZ = ");
+    Serial.print(value.AcZ);
+    Serial.println(" g");
+  }
+  return data;
 }
