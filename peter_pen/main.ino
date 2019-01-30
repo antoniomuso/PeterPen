@@ -25,7 +25,7 @@ const int MAX_TIME = 10000;
 const int ARRAY_DIM = MAX_TIME / LOOP_DELAY;
 const bool DEBUG = false;
 
-const char RAWDATA_JSON_PROTOTYPE[] = "{\"AcX\": %f,\"AcY\": %f,\"AcZ\": %f,\"Pres\": %f,\"GyX\": %f,\"GyY\": %f,\"GyZ\": %f}";
+const char RAWDATA_JSON_PROTOTYPE[] = "[%f,%f,%f,%.0f,%f,%f,%f]";
 
 // Enum per lo status della penna
 enum PEN_STATUS
@@ -228,7 +228,7 @@ void loop()
   }
   else if (status_pen != READY)
   {
-    Serial.println("Dentro elseif");
+    //Serial.println("Dentro elseif");
     setMPU6050scales(MPU_addr, 0b00000000, 0b00010000);
     readData(MPU_addr);
     counter_led++;
@@ -236,10 +236,10 @@ void loop()
 
     if (counter_led == _TIME_WAIT / LOOP_DELAY || (counter_writing * LOOP_DELAY) >= MAX_TIME)
     {
-      Serial.print("Counter Led: ");
-      Serial.println(counter_led);
-      Serial.print("Counter writing: ");
-      Serial.println(counter_writing);
+      //Serial.print("Counter Led: ");
+      //Serial.println(counter_led);
+      //Serial.print("Counter writing: ");
+      //Serial.println(counter_writing);
 
       counter_writing -= counter_led;
       sendData();
