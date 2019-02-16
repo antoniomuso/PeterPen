@@ -14,7 +14,7 @@ const float MPU_ACCL_8_SCALE = 4096.0;
 const float MPU_ACCL_16_SCALE = 2048.0;
 
 // Threshold del sensore di pressione per rilevare la scrittura
-const int TH_FORCE = 200;
+const int TH_FORCE = 350;
 // Delay del loop principale
 const int LOOP_DELAY = 10;
 // Tempo di attesa prima di poter riscrivere un altra parola
@@ -105,7 +105,7 @@ void setup()
 
   Wire.begin();
   Serial.begin(9600);
-  pinMode(0, OUTPUT);
+  pinMode(2, OUTPUT);
 
   mpu6050Begin(MPU_addr);
   connect();
@@ -120,12 +120,12 @@ void blink()
     if (stat_led)
     {
       stat_led = false;
-      digitalWrite(0, LOW);
+      digitalWrite(2, LOW);
     }
     else
     {
       stat_led = true;
-      digitalWrite(0, HIGH);
+      digitalWrite(2, HIGH);
     }
     delay(200);
   }
@@ -135,12 +135,12 @@ void setStatus(PEN_STATUS status)
 {
   if (status == READY)
   {
-    digitalWrite(0, HIGH);
+    digitalWrite(2, HIGH);
     status_pen = READY;
   }
   else if (status == WRITING)
   {
-    digitalWrite(0, LOW);
+    digitalWrite(2, LOW);
     status_pen = WRITING;
   }
   else
