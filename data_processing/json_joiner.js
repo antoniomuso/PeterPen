@@ -10,5 +10,5 @@ let json_concat = json1.concat(json2)
 fs.writeFileSync(
     path.join(
         `${process.argv[4] ? process.argv[4] : path.dirname(path_json1)}`
-        ,`${path.basename(path_json1, '.json')}_concat_${path.basename(path_json2), '.json'}.json`
+        ,`${path.basename(path_json1, '.json')}_concat_${path.basename(path_json2, '.json')}.json`
         ), JSON.stringify(json_concat))
