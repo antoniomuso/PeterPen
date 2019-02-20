@@ -34,7 +34,6 @@ var server = net.createServer(function(c) { //'connection' listener
         chunk[i] = COMMA
       }
     }
-    c.write('k')
     callback(null, chunk)
   })).pipe(writeStream).addListener('finish',() => fs.appendFile(file_path,"]",(err) => {
     if (err) console.err(`File name ${file_name} error: ${err}`)
