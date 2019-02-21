@@ -1,0 +1,15 @@
+\babel@toc {italian}{}
+\babel@toc {italian}{}
+\contentsline {chapter}{\numberline {1}TODO}{3}{chapter.1}
+\contentsline {chapter}{\numberline {2}Introduzione}{4}{chapter.2}
+\contentsline {section}{\numberline {2.1}Scrittura}{4}{section.2.1}
+\contentsline {section}{\numberline {2.2}Stato dell'arte}{4}{section.2.2}
+\contentsline {chapter}{\numberline {3}Architettura del Sistema}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}PeterPen}{5}{section.3.1}
+\contentsline {section}{\numberline {3.2}Server}{6}{section.3.2}
+\contentsline {chapter}{\numberline {4}Dataset}{7}{chapter.4}
+\contentsline {chapter}{\numberline {5}Classificazione}{8}{chapter.5}
+\contentsline {section}{\numberline {5.1}DTW}{8}{section.5.1}
+\contentsline {section}{\numberline {5.2}LSTM}{8}{section.5.2}
+\contentsline {chapter}{\numberline {6}Test}{9}{chapter.6}
+\contentsline {chapter}{\numberline {7}Lavori futuri}{10}{chapter.7}
