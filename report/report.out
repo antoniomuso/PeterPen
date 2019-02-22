@@ -6,7 +6,9 @@
 \BOOKMARK [2][-]{subsection.1.2.1}{File JSON}{section.1.2}% 6
 \BOOKMARK [0][-]{chapter.2}{Classificazione}{}% 7
 \BOOKMARK [1][-]{section.2.1}{Preprocessing}{chapter.2}% 8
-\BOOKMARK [1][-]{section.2.2}{DTW}{chapter.2}% 9
-\BOOKMARK [1][-]{section.2.3}{LSTM}{chapter.2}% 10
-\BOOKMARK [0][-]{chapter.3}{Test}{}% 11
-\BOOKMARK [0][-]{chapter.4}{Lavori futuri}{}% 12
+\BOOKMARK [2][-]{subsection.2.1.1}{Normalizzazione}{section.2.1}% 9
+\BOOKMARK [1][-]{section.2.2}{DTW}{chapter.2}% 10
+\BOOKMARK [1][-]{section.2.3}{LSTM}{chapter.2}% 11
+\BOOKMARK [2][-]{subsection.2.3.1}{Architettura del Modello}{section.2.3}% 12
+\BOOKMARK [0][-]{chapter.3}{Test}{}% 13
+\BOOKMARK [0][-]{chapter.4}{Lavori futuri}{}% 14
