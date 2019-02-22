@@ -10,6 +10,7 @@ RUN mkdir /usr/PeterPen \
     && git clone https://8f6b6a81214b3855aab1a65e7a093fe44104bc0e@github.com/antoniomuso/PeterPen.git \
     && pip install pydot \
     && pip install dtw \
+    && pip install mlpy \
     && mkdir /usr/Graph
 
 WORKDIR /usr/PeterPen/PeterPen
