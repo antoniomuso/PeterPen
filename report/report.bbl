@@ -21,6 +21,18 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
+\bibitem{DeMarsico18}
+M.~De~Marsico, F.~Ponzi, F.~Scozzafava, and G.~Tortora, ``Biopen - fusing
+  password choice and biometric interaction at presentation level,''
+  \emph{Pattern Recognition Letters}, 04 2018.
+
+\bibitem{Karouni15}
+\BIBentryALTinterwordspacing
+A.~Karouni, B.~Daya, and S.~Bahlak, ``Offline signature recognition using
+  neural networks approach,'' \emph{Procedia Computer Science}, vol.~3, pp. 155
+  -- 161, 2011, world Conference on Information Technology.
+\BIBentrySTDinterwordspacing
+
 \bibitem{Sharif18}
 M.~Sharif, M.~Khan, M.~Faisal, M.~Yasmin, and S.~Lawrence~Fernandes, ``A
   framework for offline signature verification system: Best features selection

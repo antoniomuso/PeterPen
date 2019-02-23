@@ -14,44 +14,44 @@ Database file #1: mybib.bib
 ** Sorting version - not for normal IEEE work.
 
 Done.
-You've used 2 entries,
+You've used 4 entries,
             4523 wiz_defined-function locations,
-            914 strings with 8491 characters,
-and the built_in function-call counts, 1390 in all, are:
-= -- 115
-> -- 52
-< -- 1
-+ -- 26
-- -- 16
-* -- 94
-:= -- 242
-add.period$ -- 4
-call.type$ -- 2
-change.case$ -- 14
-chr.to.int$ -- 0
-cite$ -- 2
-duplicate$ -- 88
-empty$ -- 91
-format.name$ -- 18
-if$ -- 275
+            928 strings with 8947 characters,
+and the built_in function-call counts, 3137 in all, are:
+= -- 275
+> -- 107
+< -- 12
++ -- 53
+- -- 30
+* -- 190
+:= -- 509
+add.period$ -- 8
+call.type$ -- 4
+change.case$ -- 28
+chr.to.int$ -- 27
+cite$ -- 4
+duplicate$ -- 200
+empty$ -- 207
+format.name$ -- 34
+if$ -- 666
 int.to.chr$ -- 0
-int.to.str$ -- 2
-missing$ -- 17
-newline$ -- 31
-num.names$ -- 4
-pop$ -- 52
+int.to.str$ -- 4
+missing$ -- 35
+newline$ -- 39
+num.names$ -- 8
+pop$ -- 100
 preamble$ -- 1
-purify$ -- 12
+purify$ -- 23
 quote$ -- 2
-skip$ -- 84
+skip$ -- 207
 stack$ -- 0
-substring$ -- 14
-swap$ -- 54
-text.length$ -- 1
+substring$ -- 91
+swap$ -- 142
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 6
-type$ -- 22
+type$ -- 44
 warning$ -- 0
-while$ -- 4
-width$ -- 3
-write$ -- 41
+while$ -- 11
+width$ -- 5
+write$ -- 62
