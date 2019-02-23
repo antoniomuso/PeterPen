@@ -39,7 +39,7 @@
 \subsection*{Stato dell'arte}
 	Tipicamente i sistemi di riconoscimento della scrittura si basano sul riconoscimento della firma dell'utente (ad esempio Karouni et al. \cite{Karouni15}). Tali sistemi sono anche detti di "\textit{signature recognition}", l'idea alla base di quest'approccio è che la firma varia notevolmente da individuo a individuo e quindi può essere sfruttata come tratto identificativo. Naturalmente, esistono anche sistemi che permettono il riconoscimento utilizzando qualsiasi parola, in questo caso si parla di "\textit{handwriting recognition}". Mentre i primi sono vulnerabili ad attacchi di \textit{spoofing}, i secondi sono più resistenti ma potrebbero avere performance più basse. \\
 	Ci sono due approcci principali al riconoscimento della scrittura: il primo, detto "\textit{statico}" o "\textit{off-line}", si basa su tecniche di \textit{image processing}. La firma viene catturata e poi trasformata in un'immagine, che successivamente sarà analizzata dal modello (esempi sono Sharif et al.\cite{Sharif18} e Souza V., Oliveira A. e Sabourin R. \cite{Souza18}). Il secondo approccio, detto "\textit{dinamico}" o "\textit{on-line}", si basa invece sui segnali che vengono catturati tramite dei sensori posti su una penna. Tipici segnali analizzati sono la pressione, l'accelerazione e la rotazione, in quanto caratterizzano la scrittura. In genere, quest'ultimi sono più performanti rispetto ai primi. \\
-	Un approccio dinamico molto simile a quello che verrà presentato è stato proposto con la BioPen da De Marsico M., Ponzi F., Scozzafava F. e Tortora G. \cite{DeMarsico18}, tuttavia vi sono delle differenze nei modelli proposti. Innanzitutto, nella PeterPen il modulo di Machine Learning usa le LSTM, mentre nella BioPen le SVM. La pressione, inoltre, è usata in modi diversi: mentre nella BioPen veniva misurata la pressione posta dall'utente nella presa della penna, nella PeterPen viene misurata la pressione esercitata sulla punta durante la scrittura. Questo ci ha permesso anche di automatizzare il processo di raccolta dei dati, considerando solo i periodi in cui la pressione misurata superava una certa threshold. Chiaramente questi due approcci all'utilizzo della pressione hanno anche ripercussioni differenti nel riconoscimento dell'utente. 
+	Un approccio dinamico molto simile a quello che verrà presentato è stato proposto con la BioPen da De Marsico M., Ponzi F., Scozzafava F. e Tortora G. \cite{DeMarsico18}, tuttavia vi sono delle differenze nei modelli proposti. Innanzitutto, nella PeterPen il modulo di Machine Learning usa le LSTM, mentre nella BioPen le SVM. La pressione, inoltre, è usata in modi diversi: mentre nella BioPen veniva misurata la pressione posta dall'utente nella presa della penna, nella PeterPen viene misurata la pressione esercitata sulla punta durante la scrittura. Questo ci ha permesso anche di automatizzare il processo di raccolta dei dati, considerando solo i periodi in cui la pressione misurata superava un certo threshold. Chiaramente questi due approcci all'utilizzo della pressione hanno anche ripercussioni differenti nel riconoscimento dell'utente. 
 
 	
 \chapter{Architettura del Sistema}
@@ -261,10 +261,6 @@
 				\end{figure}	
 				
 			Per ogni test del DTW (questo è solo uno di quelli che abbiamo fatto) consideriamo due parole per ogni utente e le confrontiamo con altre due parole di un altro utente. Per ogni componente (accelerometro, pressione, giroscopio) stampiamo in output le distanze per ogni combinazione fra le quattro parole; infine, stampiamo un array che contiene la somma delle rispettive distanze per ognuna delle quattro coppie di parole. \\
-<<<<<<< HEAD
-			Idealmente, le coppie composte da parole di due utenti diversi dovrebbero avere una somma delle distanze maggiore rispetto alla somma di distanze di coppie di parole dello stesso utente. Ciò che abbiamo potuto osservare, limitatamente ai pochi test che abbiamo effettuato, è che quest'assunzione sembra essere vera in tutti i casi. 
-				
-=======
 			Idealmente, le coppie composte da parole di due utenti diversi dovrebbero avere una somma delle distanze maggiore rispetto alla somma di distanze di coppie di parole dello stesso utente. Ciò che abbiamo potuto osservare, limitatamente ai pochi test che abbiamo effettuato, è che quest'assunzione sembra essere vera in tutti i casi. \\
 			In un secondo tipo di test, che abbiamo potuto effettuare un'unica volta in quanto troppo lento (l'esecuzione è durata fra le 6 e le 7 ore),  abbiamo selezionato casualmente una parola dal dataset ed abbiamo calcolato la distanza $ d $ (come media delle distanze di ognuna delle 7 componenti) di tutte le parole del dataset da essa. Il test ha avuto un esito molto positivo, generando una curva ROC la cui AUC è molto vicina a 1:
 			
@@ -279,48 +275,47 @@
 			
 			\begin{figure}[H]
 				\begin{center}
-					\includegraphics[scale=.6]{precision_recall_DTW}
-					\caption{Curve di \textit{precision} e \textit{recall} al variare della threshold}
+					\includegraphics[scale=.45]{precision_recall_DTW}
+					\caption{Curve di \textit{precision} e \textit{recall} al variare del threshold}
 				\end{center}
 			\end{figure}
 			
 			\begin{figure}[H]
 				\begin{center}
-					\includegraphics[scale=.6]{fpr_fnr_DTW}
-					\caption{Curve di FPR e FNR al variare della threshold, si noti che l'EER è poco meno di $ 0.996 $, con i due rate che sono meno di $ 0.1 $}
+					\includegraphics[scale=.45]{fpr_fnr_DTW}
+					\caption{Curve di FPR e FNR al variare del threshold, si noti che l'EER è poco meno di $ 0.996 $, con i due rate che sono meno di $ 0.1 $}
 				\end{center}
 			\end{figure}
 		
 		\newpage		
->>>>>>> 398555eaf8eaba3409c68a13c0da93966125f82a
 		
 		\subsection{LSTM}
 		
 			Il modello basato sulle LSTM ha raggiunto ottime prestazioni in poche epoch di training, tenendo comunque in considerazione che il dataset è relativamente piccolo. Includiamo solo uno dei modelli che abbiamo allenato ed i relativi test effettuati, in quanto altri esempi risulterebbero ridondanti. 
 			\begin{figure}[H]
 				\begin{center}
-					\includegraphics[scale=.175]{acc_Antonio}
+					\includegraphics[scale=.1865]{acc_Antonio}
 					\caption{Accuracy del modello sul training set}
 				\end{center}
 			\end{figure}
 			
 			\begin{figure}[H]
 				\begin{center}
-					\includegraphics[scale=.175]{loss_Antonio}
+					\includegraphics[scale=.1865]{loss_Antonio}
 					\caption{Loss del modello sul training set}
 				\end{center}
 			\end{figure}
 			
 			\begin{figure}[H]
 				\begin{center}
-					\includegraphics[scale=.175]{val_acc_Antonio}
+					\includegraphics[scale=.1865]{val_acc_Antonio}
 					\caption{Accuracy del modello sul validation set}
 				\end{center}
 			\end{figure}
 			
 			\begin{figure}[H]
 				\begin{center}
-					\includegraphics[scale=.175]{val_loss_Antonio}
+					\includegraphics[scale=.1865]{val_loss_Antonio}
 					\caption{Loss del modello sul validation set}
 				\end{center}
 			\end{figure}
@@ -332,19 +327,11 @@
 					\caption{Predizioni del modello su parole scritte in un altro momento rispetto a quelle usate nel training}
 				\end{center}
 			\end{figure*}
-<<<<<<< HEAD
-			
-			\begin{figure}[H]
-				\begin{center}
-					\includegraphics[scale=.5]{ROC_Antonio}
-					\caption{ROC del modello allenato}
-=======
 			\newpage
 			\begin{figure}[H]
 				\begin{center}
 					\includegraphics[scale=.5]{ROC_Antonio}
 					\caption{Curva ROC del modello allenato}
->>>>>>> 398555eaf8eaba3409c68a13c0da93966125f82a
 				\end{center}
 			\end{figure}
 			
