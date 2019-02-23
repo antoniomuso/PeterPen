@@ -10,5 +10,9 @@
 \BOOKMARK [1][-]{section.2.2}{DTW}{chapter.2}% 10
 \BOOKMARK [1][-]{section.2.3}{LSTM}{chapter.2}% 11
 \BOOKMARK [2][-]{subsection.2.3.1}{Architettura del Modello}{section.2.3}% 12
-\BOOKMARK [0][-]{chapter.3}{Test}{}% 13
-\BOOKMARK [0][-]{chapter.4}{Lavori futuri}{}% 14
+\BOOKMARK [0][-]{chapter.3}{Training e Test}{}% 13
+\BOOKMARK [1][-]{section.3.1}{Training}{chapter.3}% 14
+\BOOKMARK [1][-]{section.3.2}{Test}{chapter.3}% 15
+\BOOKMARK [2][-]{subsection.3.2.1}{DTW}{section.3.2}% 16
+\BOOKMARK [2][-]{subsection.3.2.2}{LSTM}{section.3.2}% 17
+\BOOKMARK [0][-]{chapter.4}{Lavori futuri}{}% 18

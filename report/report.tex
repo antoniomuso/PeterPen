@@ -28,17 +28,18 @@
 	\begin{@twocolumnfalse}
 	\maketitle
 	\begin{abstract}
-		Lo scopo che ci siamo posti con questo progetto è stato la creazione di una penna che permettesse il riconoscimento biometrico di un utente tramite la sua scrittura. A tal fine, è  stata progettata e realizzata una penna che permettesse la cattura dei dati di scrittura degli utenti, inviandoli ad un server tramite una connessione Wi-Fi. La penna è stata realizzata con chip economici e la scocca tramite una stampante 3D. Sono stati implementati due diversi modelli per il riconoscimento biometrico, uno basato su un algoritmo di deep learning ed uno su distanze fra segnali. Sul dataset disponibile è stata osservata una maggiore precisione nel riconoscimento da parte del primo modello.
+		Lo scopo che ci siamo posti con questo progetto è stato la creazione di una penna che permettesse il riconoscimento biometrico di un utente tramite la sua scrittura. A tal fine, è  stata progettata e realizzata una penna che permettesse la cattura dei dati di scrittura degli utenti, inviandoli ad un server tramite una connessione Wi-Fi. La penna è stata realizzata con chip economici e la scocca tramite una stampante 3D. Sono stati implementati due diversi modelli per il riconoscimento biometrico, uno basato su un algoritmo di deep learning ed uno su distanze fra segnali. Sul dataset disponibile sono state osservate buone performance da entrambi i modelli, con risultati molto interessanti soprattutto per il modello di deep learning.
 	\end{abstract}
   	\end{@twocolumnfalse}
 ]
 
-\section*{Scrittura}
+\subsection*{Scrittura}
 	La scrittura è uno dei tanti tratti che può essere usato in un sistema biometrico. È categorizzato come un tratto biometrico \textit{comportamentale}, in quanto è basato su un'azione appresa dall'utente, oltre al suo stato umorale nel momento della cattura dei dati (altri esempi di questi tratti sono il modo in cui si cammina e la battitura dei tasti). Generalmente, ha una bassa \textit{accuracy} ma un'elevata \textit{acceptability}.  \\
 	Il tratto è principalmente influenzato da caratteristiche quali la calligrafia, la pressione esercitata e l'inclinazione della penna durante la scrittura.
-\section*{Stato dell'arte}
-	Tipicamente i sistemi di riconoscimento della scrittura si basano sul riconoscimento della firma dell'utente. Tali sistemi sono anche detti di "\textit{signature recognition}", l'idea alla base di quest'approccio è che la firma varia notevolmente da individuo a individuo e quindi può essere sfruttata come tratto identificativo. Naturalmente, esistono anche sistemi che permettono il riconoscimento utilizzando qualsiasi parola, in questo caso si parla di "\textit{handwriting recognition}". Mentre i primi sono vulnerabili ad attacchi di \textit{spoofing}, i secondi sono più resistenti ma potrebbero avere performance più basse. \\
-	Ci sono due approcci principali al riconoscimento della scrittura: il primo, detto "\textit{statico}" o "\textit{off-line}", si basa su tecniche di \textit{image processing}. La firma viene catturata e poi trasformata in un'immagine, che successivamente sarà analizzata dal modello (esempi sono \cite{Sharif18}, \cite{Souza18}). Il secondo approccio, detto "\textit{dinamico}" o "\textit{on-line}", si basa invece sui segnali che vengono catturati tramite dei sensori posti su una penna. Tipici segnali analizzati sono la pressione, l'accelerazione e la rotazione, in quanto caratterizzano la scrittura. In genere, quest'ultimi sono più performanti rispetto ai primi.
+\subsection*{Stato dell'arte}
+	Tipicamente i sistemi di riconoscimento della scrittura si basano sul riconoscimento della firma dell'utente (ad esempio Karouni et al. \cite{Karouni15}). Tali sistemi sono anche detti di "\textit{signature recognition}", l'idea alla base di quest'approccio è che la firma varia notevolmente da individuo a individuo e quindi può essere sfruttata come tratto identificativo. Naturalmente, esistono anche sistemi che permettono il riconoscimento utilizzando qualsiasi parola, in questo caso si parla di "\textit{handwriting recognition}". Mentre i primi sono vulnerabili ad attacchi di \textit{spoofing}, i secondi sono più resistenti ma potrebbero avere performance più basse. \\
+	Ci sono due approcci principali al riconoscimento della scrittura: il primo, detto "\textit{statico}" o "\textit{off-line}", si basa su tecniche di \textit{image processing}. La firma viene catturata e poi trasformata in un'immagine, che successivamente sarà analizzata dal modello (esempi sono Sharif et al.\cite{Sharif18} e Souza V., Oliveira A. e Sabourin R. \cite{Souza18}). Il secondo approccio, detto "\textit{dinamico}" o "\textit{on-line}", si basa invece sui segnali che vengono catturati tramite dei sensori posti su una penna. Tipici segnali analizzati sono la pressione, l'accelerazione e la rotazione, in quanto caratterizzano la scrittura. In genere, quest'ultimi sono più performanti rispetto ai primi. \\
+	Un approccio dinamico molto simile a quello che verrà presentato è stato proposto con la BioPen da De Marsico M., Ponzi F., Scozzafava F. e Tortora G. \cite{DeMarsico18}, tuttavia vi sono delle differenze nei modelli proposti. Innanzitutto, nella PeterPen il modulo di Machine Learning usa le LSTM, mentre nella BioPen le SVM. La pressione, inoltre, è usata in modi diversi: mentre nella BioPen veniva misurata la pressione posta dall'utente nella presa della penna, nella PeterPen viene misurata la pressione esercitata sulla punta durante la scrittura. Questo ci ha permesso anche di automatizzare il processo di raccolta dei dati, considerando solo i periodi in cui la pressione misurata superava una certa threshold. Chiaramente questi due approcci all'utilizzo della pressione hanno anche ripercussioni differenti nel riconoscimento dell'utente. 
 
 	
 \chapter{Architettura del Sistema}
@@ -213,27 +214,120 @@
 				\subsubsection{Dense}
 					Lo strato \verb|Dense| ha come scopo quello di restituire la classificazione finale, usando come funzione di attivazione la sigmoide. 
 			
-		
+	
+			\begin{figure*}
+				\begin{center}
+					\includegraphics[scale=.45]{def_model}
+					\caption{Definizione del modello}
+				\end{center}
+			\end{figure*}					
+					
 			\begin{figure*}
 				\begin{center}
 					\includegraphics[scale=.23]{lstm_model}
-					\caption{Modello usato, rappresentazione da TensorFlow}
+					\caption{Modello durante la fase di training, rappresentazione da TensorFlow}
 				\end{center}
 			\end{figure*}		
 		
 
 
-\chapter{Test}
-
+\chapter{Training e Test}
+	Il dataset raccolto contiene parole scritte da 23 persone diverse, per un totale di 845 sample. La parola scelta da far scrivere agli utenti è "Computer", in corsivo. \\
+	Sia il training che i vari test sono stati eseguiti su un computer fisico con le seguenti specifiche:
+	\begin{itemize}
+		\item CPU: Intel Core i7 8700K;
+		\item GPU: NVIDIA GeForce GTX 1070;
+		\item RAM: 32 GB @ 3200 MHz.
+	\end{itemize}
+	
+	\subsubsection*{Docker}
+	Al fine di poter sfruttare la potenza calcolatrice della GPU abbiamo utilizzato il sistema Docker. Docker è un sistema di virtualizzazione che permette di creare delle macchine virtuali, detti "\textit{container}", che condividono il kernel (in modo da offrire prestazioni migliori rispetto ad una semplice macchina virtuale). Quel che abbiamo fatto è stato creare un container al cui interno viene eseguito un Jupyter Notebook. Inoltre, ci ha permesso anche di facilitare il deploy, rendendolo possibile su qualsiasi macchina (poiché i Jupyter Notebook possono essere eseguiti in remoto) e fornendo anche maggior protezione da eventuali attacchi informatici (in quanto il programma viene eseguito all'interno di una macchina virtuale). 
+	
+	\section{Training}
+		È stato effettuato un training apposito per riconoscere alcuni degli utenti che sono stati registrati, generandone i relativi modelli. \\ 
+		Ogni training ha previsto 110 \textit{epochs}, con un \textit{batch} di 32 elementi; inoltre è stata effettuata, in ogni \textit{epoch}, una fase di \textit{validation} usando un terzo delle parole presenti nell'insieme di training. \\
+		Chiaramente, il dataset risulta ancora abbastanza contenuto, quindi i dati che saranno presentati nella successiva sezione non sono indicativi delle reali performance del sistema, per adesso. Nonostante ciò, ha senso analizzarli per avere una prima impressione dei modelli sviluppati.
+		
+	\section{Test}
+		
+		\subsection{DTW}
+			Per quanto riguarda il DTW abbiamo potuto effettuare un numero limitato di test, soprattutto per problemi di tempo. Poiché Python non supporta esecuzioni in multithread, il programma è stato eseguito su un singolo processore, rendendolo purtroppo più lento. \\
+			Nonostante ciò, abbiamo ottenuto alcuni risultati abbastanza promettenti:
+				\begin{figure}[H]
+					\begin{center}
+						\includegraphics[scale=.25]{dtw_test}
+						\caption{Risultati del test del DTW su due coppie di parole di due utenti registrati}
+					\end{center}
+				\end{figure}	
+				
+			Per ogni test del DTW (questo è solo uno di quelli che abbiamo fatto) consideriamo due parole per ogni utente e le confrontiamo con altre due parole di un altro utente. Per ogni componente (accelerometro, pressione, giroscopio) stampiamo in output le distanze per ogni combinazione fra le quattro parole; infine, stampiamo un array che contiene la somma delle rispettive distanze per ognuna delle quattro coppie di parole. \\
+			Idealmente, le coppie composte da parole di due utenti diversi dovrebbero avere una somma delle distanze maggiore rispetto alla somma di distanze di coppie di parole dello stesso utente. Ciò che abbiamo potuto osservare, limitatamente ai pochi test che abbiamo effettuato, è che quest'assunzione sembra essere vera in tutti i casi. 
+				
+		
+		\subsection{LSTM}
+		
+			Il modello basato sulle LSTM ha raggiunto ottime prestazioni in poche epoch di training, tenendo comunque in considerazione che il dataset è relativamente piccolo. Includiamo solo uno dei modelli che abbiamo allenato ed i relativi test effettuati, in quanto altri esempi risulterebbero ridondanti. 
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.175]{acc_Antonio}
+					\caption{Accuracy del modello sul training set}
+				\end{center}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.175]{loss_Antonio}
+					\caption{Loss del modello sul training set}
+				\end{center}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.175]{val_acc_Antonio}
+					\caption{Accuracy del modello sul validation set}
+				\end{center}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.175]{val_loss_Antonio}
+					\caption{Loss del modello sul validation set}
+				\end{center}
+			\end{figure}
+			
+			\begin{figure*}
+				\begin{center}
+					\label{figure:prediction}
+					\includegraphics[scale=.5]{test_Antonio}
+					\caption{Predizioni del modello su parole scritte in un altro momento rispetto a quelle usate nel training}
+				\end{center}
+			\end{figure*}
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.5]{ROC_Antonio}
+					\caption{ROC del modello allenato}
+				\end{center}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.4]{measures_table_LSTM}
+					\caption{Report delle statistiche del modello}
+				\end{center}
+			\end{figure}
+			\newpage
+			Particolarmente interessante è la figura sulle predizioni, che in sostanza rappresenta il task principale della PeterPen, ossia riconoscere una persona dai dati che si raccolgono mentre scrive, sfruttando un modello allenato su altri dati dello stesso utente ma ottenuti in un momento precedente. Dai test che abbiamo effettuato sembra che il modello riesca effettivamente a riconoscere l'utente, con un accuracy di quasi il 99\%. \\
+			Il modello inoltre non sembra essere afflitto da problemi di \textit{overfit} o \textit{underfit}, in quanto raggiunge accuracy molto simili nelle ultime epoche per il training set ed il validation set, oltre al 99\% di accuracy sul nuovo set di parole come scritto sopra. \\
 
 
 \chapter{Lavori futuri}
 
 	Innanzitutto, vorremmo effettuare una stampa della scocca più precisa. Abbiamo incontrato varie difficoltà nel montare la penna, dovute principalmente alle imprecisioni della stampante. \\
-	Inoltre, andrebbe sviluppato anche un chip apposito, in quanto la maggior parte dei pin sull'ESP8266 è inutilizzato. \\
+	Inoltre, andrebbe sviluppato anche un chip dedicato, in quanto la maggior parte dei pin sull'ESP8266 è inutilizzato. \\
 	Per quanto riguarda il lato software, ci sono due possibili sviluppi. 
-	\\ Dal lato DTW, si potrebbe provare a dare dei pesi alle singole feature nel calcolo del costo. Questa possibile modifica nasce dall'osservazione che, con molta probabilità, nel calcolo della distanza fra due parole scritte, ci sono alcune componenti dei dati che potrebbero essere più importanti di altre. 
-	\\ Infine, abbiamo osservato che il modello di deep learning, allenato soltanto per riconoscere la parola "Computer" scritta da un solo utente, ha "erroneamente" riconosciuto anche dei "Ciao" scritti dallo stesso utente. Questo ci fa pensare che, con alte probabilità, il modello si potrebbe prestare anche al riconoscimento della scrittura dell'utente, allenandolo su varie parole diverse scritte dallo stesso.
+	\\ Dal lato DTW, si potrebbe provare a dare dei pesi alle singole feature nel calcolo del costo. Questa possibile modifica nasce dall'osservazione che, con molta probabilità, nel calcolo della distanza fra due parole scritte, ci sono alcune componenti dei dati che potrebbero essere più importanti di altre. Inoltre, vanno necessariamente fatti più test, per poter verificare in modo più attendibile le prestazioni.
+	\\ Infine, abbiamo osservato che il modello di deep learning, allenato soltanto per riconoscere la parola "Computer" scritta da un solo utente, ha "erroneamente" riconosciuto anche dei "Ciao" \\ scritti dallo stesso utente. Questo ci fa pensare che, con alte probabilità, il modello si potrebbe prestare anche al riconoscimento della scrittura dell'utente, allenandolo su varie parole diverse scritte dallo stesso.
 	
 	\begin{figure}[H]
 		\begin{center}
@@ -241,7 +335,7 @@
 			\includegraphics[scale=.3]{scrittura_antonio}
 			\includegraphics[scale=.3]{scrittura_manuel}
 			\includegraphics[scale=.3]{scrittura_giovanni}
-			\caption{ Come si può osservare, il modello rifiuta, correttamente, tutti gli altri utenti, mentre circa nel 10\% dei casi riesce a riconoscere correttamente l'utente, nonostante non abbia mai visto quella parola}
+			\caption{ Come si può osservare, il modello rifiuta (correttamente) gli impostori, mentre circa nel 10\% dei casi riesce a riconoscere correttamente l'utente, nonostante non abbia mai visto quella sua  parola}
 		\end{center}
 	\end{figure}
 
