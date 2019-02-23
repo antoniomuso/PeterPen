@@ -45,8 +45,8 @@
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Preprocessing}{4}{section.2.1}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Normalizzazione}{4}{subsection.2.1.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.2}DTW}{4}{section.2.2}}
-\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces DTW\relax }}{4}{algocf.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {2.3}LSTM}{5}{section.2.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}LSTM}{4}{section.2.3}}
+\@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces DTW\relax }}{5}{algocf.1}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces Una RNN "srotolata"\relax }}{5}{figure.caption.8}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces Architettura di una LSTM\relax }}{5}{figure.caption.9}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Architettura del Modello}{5}{subsection.2.3.1}}
@@ -64,22 +64,25 @@
 \@writefile{toc}{\contentsline {section}{\numberline {3.2}Test}{8}{section.3.2}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}DTW}{8}{subsection.3.2.1}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Risultati del test del DTW su due coppie di parole di due utenti registrati\relax }}{8}{figure.caption.17}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}LSTM}{9}{subsection.3.2.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Accuracy del modello sul training set\relax }}{9}{figure.caption.18}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Loss del modello sul training set\relax }}{9}{figure.caption.19}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Accuracy del modello sul validation set\relax }}{9}{figure.caption.20}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Loss del modello sul validation set\relax }}{9}{figure.caption.21}}
-\newlabel{figure:prediction}{{\caption@xref {figure:prediction}{ on input line 300}}{10}{LSTM}{figure.caption.22}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Predizioni del modello su parole scritte in un altro momento rispetto a quelle usate nel training\relax }}{10}{figure.caption.22}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces ROC del modello allenato\relax }}{10}{figure.caption.23}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces Report delle statistiche del modello\relax }}{10}{figure.caption.24}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Curva ROC ottenuta considerando la "vicinanza" ($ 1 - d $); AUC $ \cong  0.99 $\relax }}{9}{figure.caption.18}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Curve di \textit  {precision} e \textit  {recall} al variare della threshold\relax }}{9}{figure.caption.19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Curve di FPR e FNR al variare della threshold, si noti che l'EER \IeC {\`e} poco meno di $ 0.996 $, con i due rate che sono meno di $ 0.1 $\relax }}{9}{figure.caption.20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}LSTM}{10}{subsection.3.2.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Accuracy del modello sul training set\relax }}{10}{figure.caption.21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Loss del modello sul training set\relax }}{10}{figure.caption.22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces Accuracy del modello sul validation set\relax }}{10}{figure.caption.23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces Loss del modello sul validation set\relax }}{10}{figure.caption.24}}
+\newlabel{figure:prediction}{{\caption@xref {figure:prediction}{ on input line 325}}{11}{LSTM}{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.9}{\ignorespaces Predizioni del modello su parole scritte in un altro momento rispetto a quelle usate nel training\relax }}{11}{figure.caption.25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.10}{\ignorespaces Curva ROC del modello allenato\relax }}{11}{figure.caption.26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.11}{\ignorespaces Report delle statistiche del modello\relax }}{11}{figure.caption.27}}
 \bibstyle{myIEEEtranS}
 \bibdata{mybib}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Lavori futuri}{11}{chapter.4}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Lavori futuri}{12}{chapter.4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces  Come si pu\IeC {\`o} osservare, il modello rifiuta (correttamente) gli impostori, mentre circa nel 10\% dei casi riesce a riconoscere correttamente l'utente, nonostante non abbia mai visto quella sua parola\relax }}{11}{figure.caption.25}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces  Come si pu\IeC {\`o} osservare, il modello rifiuta (correttamente) gli impostori, mentre circa nel 10\% dei casi riesce a riconoscere correttamente l'utente, nonostante non abbia mai visto quella sua parola\relax }}{12}{figure.caption.28}}
 \bibcite{DeMarsico18}{1}
 \bibcite{Karouni15}{2}
 \bibcite{Sharif18}{3}

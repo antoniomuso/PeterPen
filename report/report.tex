@@ -116,7 +116,7 @@
 \chapter{Classificazione}
 
 	\section{Preprocessing}
-		Nella fase di preprocessing i dati sono stati normalizzati, effettuando il rescaling delle singole feature, ed è stato aggiunto del padding per rendere i vettori delle singole parole lunghi esattamente 1000. \\
+		Nella fase di preprocessing i dati sono stati normalizzati, effettuando il rescaling delle singole feature, ed è stato aggiunto del padding per rendere i vettori delle singole parole lunghi esattamente 1000. Il padding è stato eseguito per entrambi i modelli, mentre il rescaling solo per il DTW (poiché peggiorava le prestazioni dell'LSTM, abbiamo deciso di non usare i dati scalati in quel caso). \\
 		
 		\subsection{Normalizzazione}
 			I  dati sono stati normalizzati utilizzando la funzione di rescaling: 
@@ -261,8 +261,33 @@
 				\end{figure}	
 				
 			Per ogni test del DTW (questo è solo uno di quelli che abbiamo fatto) consideriamo due parole per ogni utente e le confrontiamo con altre due parole di un altro utente. Per ogni componente (accelerometro, pressione, giroscopio) stampiamo in output le distanze per ogni combinazione fra le quattro parole; infine, stampiamo un array che contiene la somma delle rispettive distanze per ognuna delle quattro coppie di parole. \\
-			Idealmente, le coppie composte da parole di due utenti diversi dovrebbero avere una somma delle distanze maggiore rispetto alla somma di distanze di coppie di parole dello stesso utente. Ciò che abbiamo potuto osservare, limitatamente ai pochi test che abbiamo effettuato, è che quest'assunzione sembra essere vera in tutti i casi. 
-				
+			Idealmente, le coppie composte da parole di due utenti diversi dovrebbero avere una somma delle distanze maggiore rispetto alla somma di distanze di coppie di parole dello stesso utente. Ciò che abbiamo potuto osservare, limitatamente ai pochi test che abbiamo effettuato, è che quest'assunzione sembra essere vera in tutti i casi. \\
+			In un secondo tipo di test, che abbiamo potuto effettuare un'unica volta in quanto troppo lento (l'esecuzione è durata fra le 6 e le 7 ore),  abbiamo selezionato casualmente una parola dal dataset ed abbiamo calcolato la distanza $ d $ (come media delle distanze di ognuna delle 7 componenti) di tutte le parole del dataset da essa. Il test ha avuto un esito molto positivo, generando una curva ROC la cui AUC è molto vicina a 1:
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.4]{ROC_DTW}
+					\caption{Curva ROC ottenuta considerando la "vicinanza" ($ 1 - d $); AUC $ \cong 0.99 $}
+				\end{center}
+			\end{figure}
+			
+			Visto che le feature sono state scalate fra $ 0 $ e $ 1 $, la distanza massima è proprio $ 1 $, e di conseguenza la vicinanza è data come la differenza fra $ 1 $ e la distanza calcolata. 
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.6]{precision_recall_DTW}
+					\caption{Curve di \textit{precision} e \textit{recall} al variare della threshold}
+				\end{center}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.6]{fpr_fnr_DTW}
+					\caption{Curve di FPR e FNR al variare della threshold, si noti che l'EER è poco meno di $ 0.996 $, con i due rate che sono meno di $ 0.1 $}
+				\end{center}
+			\end{figure}
+		
+		\newpage		
 		
 		\subsection{LSTM}
 		
@@ -302,11 +327,11 @@
 					\caption{Predizioni del modello su parole scritte in un altro momento rispetto a quelle usate nel training}
 				\end{center}
 			\end{figure*}
-			
+			\newpage
 			\begin{figure}[H]
 				\begin{center}
 					\includegraphics[scale=.5]{ROC_Antonio}
-					\caption{ROC del modello allenato}
+					\caption{Curva ROC del modello allenato}
 				\end{center}
 			\end{figure}
 			
