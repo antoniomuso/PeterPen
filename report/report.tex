@@ -164,6 +164,8 @@
 		L'algoritmo costruisce una matrice $ n \times m $, dove $ n $ ed $ m $ sono rispettivamente le lunghezze delle due sequenze, e riempie ogni cella $ i, j $ della matrice con la distanza minima per raggiungerla dalla cella $ [0, 0] $; l'output è dato quindi dal valore nella cella $ [n, m] $. \\
 		Per l'implementazione di quest'algoritmo abbiamo usato la libreria disponibile su GitHub al seguente link: \href{https://github.com/pierre-rouanet/dtw}{github.com/pierre-rouanet/dtw}.
 		
+		\newpage
+		
 
 	\section{LSTM}
 		Le LSTM (\textit{Long Short Term Memory}) sono un'architettura di RNN (\textit{Recurrent Neural Network}). Le RNN sono una classe di reti neurali in cui l'output ad un certo istante $ t $ è passato anche in input alla rete nell'istante successivo $ t + 1 $. Uno degli strati al suo interno è utilizzato come memoria, e questo permette alla rete di riconoscere sequenze di valori, utilizzando sia il valore di input all'istante $ t $ sia lo stato interno (che è ottenuto dalla sequenza di input fino all'istante $ t - 1 $). 
@@ -194,7 +196,7 @@
 		\end{itemize}
 		
 		\subsection{Architettura del Modello}
-			Il modello di \textit{deep learning} implementato è formato da 5 strati, di cui 2 che sono LSTM:
+			Il modello di \textit{deep learning} implementato è formato da 5 strati, di cui 2 LSTM:
 			\begin{enumerate}
 				\item un primo strato \verb|Masking|;
 				\item due strati \verb|LSTM|;
