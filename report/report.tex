@@ -13,6 +13,7 @@
 \usepackage[top=1in, bottom=1.25in, left=1.25in, right=1.25in]{geometry}
 \usepackage[justification=justified, format=plain]{caption}
 \usepackage[ruled]{algorithm2e}
+\usepackage[nameinlink]{cleveref}
 
 \title{PeterPen}
 \author{Dario Montagnini, Antonio Musolino, \\Manuel Prandini, Giovanni Varricchione}
@@ -69,10 +70,10 @@
 		Il sensore di pressione misura la forza applicata sulla punta della penna grazie all'ausilio di una molla. Subito dopo il sensore di pressione è posizionato il chip dell'accelerometro e del giroscopio e, dopo questo, si trova il microcontrollore. \\
 		
 		\begin{figure}[H]
-			\label{figure:circuito}
 			\begin{center}
 				\includegraphics[scale=.35]{circuito}
 				\caption{Circuito della PeterPen}
+				\label{fig:circuito}
 			\end{center}
 		\end{figure}
 
@@ -92,7 +93,7 @@
 
 		
 		\subsection{Protocollo di acquisizione}
-			È stato ideato un protocollo per semplificare l'acquisizione e l'invio dei dati. All'accensione della penna (che può essere alimentata o tramite un cavo USB o tramite batteria, usandone o una da 9V, come in \hyperref[figure:circuito]{figura}, o una da 3.3V o 3.6V, alimentandola però tramite il pin 3v3) il LED lampeggia durante la connessione alla rete e al server, o in caso di errore. Una volta connessa, il LED smette di lampeggiare e rimane acceso, questo indica all'utente che può iniziare a scrivere. Durante la scrittura la luce rimane spenta e, se non viene rilevata alcuna pressione per più di 2 secondi, si riaccende indicando la fine della scrittura della parola precedente e l'invio dei dati. È stato inoltre impostato come tempo massimo di scrittura 10 secondi, nel caso in cui l'utente superi tale limite il LED comincerà a lampeggiare, per segnalare l'errore e nessun dato sarà inviato.
+			È stato ideato un protocollo per semplificare l'acquisizione e l'invio dei dati. All'accensione della penna (che può essere alimentata o tramite un cavo USB o tramite batteria, usandone o una da 9V (\cref{fig:circuito}) o una da 3.3V o 3.6V, alimentandola però tramite il pin 3v3) il LED lampeggia durante la connessione alla rete e al server, o in caso di errore. Una volta connessa, il LED smette di lampeggiare e rimane acceso, questo indica all'utente che può iniziare a scrivere. Durante la scrittura la luce rimane spenta e, se non viene rilevata alcuna pressione per più di 2 secondi, si riaccende indicando la fine della scrittura della parola precedente e l'invio dei dati. È stato inoltre impostato come tempo massimo di scrittura 10 secondi, nel caso in cui l'utente superi tale limite il LED comincerà a lampeggiare, per segnalare l'errore e nessun dato sarà inviato.
 		
 		\subsection{Codice sorgente della penna}
 			Il microcontrollore ESP8266 è programmato con un linguaggio derivato dal C, lo stesso che viene usato nella programmazione dei chip Arduino. Tale linguaggio richiede necessariamente l'implementazione di due funzioni in ogni programma. \\
@@ -196,7 +197,7 @@
 		\end{itemize}
 		
 		\subsection{Architettura del Modello}
-			Il modello di \textit{deep learning} implementato è formato da 5 strati, di cui 2 LSTM:
+			Il modello di \textit{deep learning} implementato è formato da 5 strati, di cui 2 LSTM (\cref{fig:model}):
 			\begin{enumerate}
 				\item un primo strato \verb|Masking|;
 				\item due strati \verb|LSTM|;
@@ -221,6 +222,7 @@
 				\begin{center}
 					\includegraphics[scale=.45]{def_model}
 					\caption{Definizione del modello}
+					\label{fig:model}
 				\end{center}
 			\end{figure*}					
 					
@@ -285,7 +287,7 @@
 			\begin{figure}[H]
 				\begin{center}
 					\includegraphics[scale=.45]{fpr_fnr_DTW}
-					\caption{Curve di FPR e FNR al variare del threshold, si noti che l'EER è poco meno di $ 0.996 $, con i due rate che sono meno di $ 0.1 $}
+					\caption{Curve di FPR e FNR al variare del threshold, si noti che l'EER è meno di $ 0.1 $, con il relativo threshold di poco inferiore a $ 0.996 $}
 				\end{center}
 			\end{figure}
 		
@@ -298,6 +300,7 @@
 				\begin{center}
 					\includegraphics[scale=.1865]{acc_Antonio}
 					\caption{Accuracy del modello sul training set}
+					\label{fig:acc_train}
 				\end{center}
 			\end{figure}
 			
@@ -312,6 +315,7 @@
 				\begin{center}
 					\includegraphics[scale=.1865]{val_acc_Antonio}
 					\caption{Accuracy del modello sul validation set}
+					\label{fig:acc_val}
 				\end{center}
 			\end{figure}
 			
@@ -324,12 +328,14 @@
 			
 			\begin{figure*}
 				\begin{center}
-					\label{figure:prediction}
 					\includegraphics[scale=.5]{test_Antonio}
 					\caption{Predizioni del modello su parole scritte in un altro momento rispetto a quelle usate nel training}
+					\label{fig:prediction}
 				\end{center}
 			\end{figure*}
+			
 			\newpage
+			
 			\begin{figure}[H]
 				\begin{center}
 					\includegraphics[scale=.5]{ROC_Antonio}
@@ -344,8 +350,8 @@
 				\end{center}
 			\end{figure}
 			\newpage
-			Particolarmente interessante è la figura sulle predizioni, che in sostanza rappresenta il task principale della PeterPen, ossia riconoscere una persona dai dati che si raccolgono mentre scrive, sfruttando un modello allenato su altri dati dello stesso utente ma ottenuti in un momento precedente. Dai test che abbiamo effettuato sembra che il modello riesca effettivamente a riconoscere l'utente, con un accuracy di quasi il 99\%. \\
-			Il modello inoltre non sembra essere afflitto da problemi di \textit{overfit} o \textit{underfit}, in quanto raggiunge accuracy molto simili nelle ultime epoche per il training set ed il validation set, oltre al 99\% di accuracy sul nuovo set di parole come scritto sopra. \\
+			Particolarmente interessante è la figura sulle predizioni, che in sostanza rappresenta il task principale della PeterPen, ossia riconoscere una persona dai dati che si raccolgono mentre scrive, sfruttando un modello allenato su altri dati dello stesso utente ma ottenuti in un momento precedente. Dai test che abbiamo effettuato sembra che il modello riesca effettivamente a riconoscere l'utente, con un accuracy di quasi il 99\% (\cref{fig:prediction}). \\
+			Il modello inoltre non sembra essere afflitto da problemi di \textit{overfit} o \textit{underfit}, in quanto raggiunge accuracy molto simili nelle ultime epoche per il training set (\cref{fig:acc_train}) ed il validation set (\cref{fig:acc_val}), oltre al 99\% di accuracy sul nuovo set di parole come scritto sopra. \\
 
 
 \chapter{Lavori futuri}
@@ -354,7 +360,7 @@
 	Inoltre, andrebbe sviluppato anche un chip dedicato, in quanto la maggior parte dei pin sull'ESP8266 è inutilizzato. \\
 	Per quanto riguarda il lato software, ci sono due possibili sviluppi. 
 	\\ Dal lato DTW, si potrebbe provare a dare dei pesi alle singole feature nel calcolo del costo. Questa possibile modifica nasce dall'osservazione che, con molta probabilità, nel calcolo della distanza fra due parole scritte, ci sono alcune componenti dei dati che potrebbero essere più importanti di altre. Inoltre, vanno necessariamente fatti più test, per poter verificare in modo più attendibile le prestazioni.
-	\\ Infine, abbiamo osservato che il modello di deep learning, allenato soltanto per riconoscere la parola "Computer" scritta da un solo utente, ha "erroneamente" riconosciuto anche dei "Ciao" \\ scritti dallo stesso utente. Questo ci fa pensare che, con alte probabilità, il modello si potrebbe prestare anche al riconoscimento della scrittura dell'utente, allenandolo su varie parole diverse scritte dallo stesso.
+	\\ Infine, abbiamo osservato che il modello di deep learning, allenato soltanto per riconoscere la parola "Computer" scritta da un solo utente, ha "erroneamente" riconosciuto anche dei "Ciao" \\ scritti dallo stesso utente (\cref{fig:ciao}). Questo ci fa pensare che, con alte probabilità, il modello si potrebbe prestare anche al riconoscimento della scrittura dell'utente, allenandolo su varie parole diverse scritte dallo stesso.
 	
 	\begin{figure}[H]
 		\begin{center}
@@ -363,6 +369,7 @@
 			\includegraphics[scale=.3]{scrittura_manuel}
 			\includegraphics[scale=.3]{scrittura_giovanni}
 			\caption{ Come si può osservare, il modello rifiuta (correttamente) gli impostori, mentre circa nel 10\% dei casi riesce a riconoscere correttamente l'utente, nonostante non abbia mai visto quella sua  parola}
+			\label{fig:ciao}
 		\end{center}
 	\end{figure}
 
