@@ -342,7 +342,7 @@
 		
 		\subsection{LSTM}
 		
-			Il modello basato sulle LSTM ha raggiunto ottime prestazioni in poche epoch di training, tenendo comunque in considerazione che il dataset è relativamente piccolo. Includiamo solo uno dei modelli che abbiamo allenato ed i relativi test effettuati, in quanto altri esempi risulterebbero ridondanti. Verranno riportati i grafici ottenuti allenando il modello su due diversi utenti; in entrambi i casi il modello ha ottenuto buoni risultati, raggiungendo una precisione di almeno il 98\%, sia nei set di training che nei set di validation. 
+			Il modello basato sulle LSTM ha raggiunto ottime prestazioni in poche epoch di training, tenendo comunque in considerazione che il dataset è relativamente piccolo. Includiamo solo uno dei modelli che abbiamo allenato ed i relativi test effettuati, in quanto altri esempi risulterebbero ridondanti. Verranno riportati i grafici ottenuti allenando il modello su due diversi utenti. In entrambi i casi il modello ha ottenuto buoni risultati, raggiungendo una precisione di almeno il 98\%, sia nei set di training che nei set di validation; va notato che abbiamo raccolto più dati dal primo utente, il che potrebbe spiegare le migliori performance rispetto al secondo. 
 			\begin{figure}[H]
 				\begin{center}
 					\includegraphics[scale=.1865]{acc_Antonio}
@@ -385,13 +385,6 @@
 			
 			\begin{figure}[H]
 				\begin{center}
-					\includegraphics[scale=.5]{ROC_LSTM_Antonio}
-					\caption{Curva ROC del modello allenato}
-				\end{center}
-			\end{figure}
-			
-			\begin{figure}[H]
-				\begin{center}
 					\includegraphics[scale=.16]{acc_Manuel}
 					\caption{Accuracy del modello sul training set; secondo utente}
 					\label{fig:acc_train_Manuel}
@@ -419,6 +412,8 @@
 					\caption{Loss del modello sul validation set}
 				\end{center}
 			\end{figure}
+			
+			\newpage			
 			
 			\begin{figure}[H]
 				\begin{center}
