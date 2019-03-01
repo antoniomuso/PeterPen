@@ -249,7 +249,7 @@
 	
 	\section{Training}
 		È stato effettuato un training apposito per riconoscere alcuni degli utenti che sono stati registrati, generandone i relativi modelli. \\ 
-		Ogni training ha previsto 110 \textit{epochs}, con un \textit{batch} di 32 elementi; inoltre è stata effettuata, in ogni \textit{epoch}, una fase di \textit{validation} usando un terzo delle parole presenti nell'insieme di training. \\
+		Ogni training ha previsto 110 \textit{epochs}, con un \textit{batch} di 32 elementi; inoltre è stata effettuata, in ogni \textit{epoch}, una fase di validation usando un terzo delle parole presenti nell'insieme di training. \\
 		Chiaramente, il dataset risulta ancora abbastanza contenuto, quindi i dati che saranno presentati nella successiva sezione non sono indicativi delle reali performance del sistema, per adesso. Nonostante ciò, ha senso analizzarli per avere una prima impressione dei modelli sviluppati.
 		
 	\section{Test}
@@ -342,12 +342,12 @@
 		
 		\subsection{LSTM}
 		
-			Il modello basato sulle LSTM ha raggiunto ottime prestazioni in poche epoch di training, tenendo comunque in considerazione che il dataset è relativamente piccolo. Includiamo solo uno dei modelli che abbiamo allenato ed i relativi test effettuati, in quanto altri esempi risulterebbero ridondanti. 
+			Il modello basato sulle LSTM ha raggiunto ottime prestazioni in poche epoch di training, tenendo comunque in considerazione che il dataset è relativamente piccolo. Includiamo solo uno dei modelli che abbiamo allenato ed i relativi test effettuati, in quanto altri esempi risulterebbero ridondanti. Verranno riportati i grafici ottenuti allenando il modello su due diversi utenti; in entrambi i casi il modello ha ottenuto buoni risultati, raggiungendo una precisione di almeno il 98\%, sia nei set di training che nei set di validation. 
 			\begin{figure}[H]
 				\begin{center}
 					\includegraphics[scale=.1865]{acc_Antonio}
-					\caption{Accuracy del modello sul training set}
-					\label{fig:acc_train}
+					\caption{Accuracy del modello sul training set; primo utente}
+					\label{fig:acc_train_Antonio}
 				\end{center}
 			\end{figure}
 			
@@ -362,7 +362,7 @@
 				\begin{center}
 					\includegraphics[scale=.1865]{val_acc_Antonio}
 					\caption{Accuracy del modello sul validation set}
-					\label{fig:acc_val}
+					\label{fig:acc_val_Antonio}
 				\end{center}
 			\end{figure}
 			
@@ -376,7 +376,7 @@
 			\begin{figure*}
 				\begin{center}
 					\includegraphics[scale=.5]{test_Antonio}
-					\caption{Predizioni del modello su parole scritte in un altro momento rispetto a quelle usate nel training}
+					\caption{Predizioni del primo modello su parole scritte dal primo utente in un altro momento rispetto a quelle usate nel training}
 					\label{fig:prediction}
 				\end{center}
 			\end{figure*}
@@ -392,13 +392,43 @@
 			
 			\begin{figure}[H]
 				\begin{center}
+					\includegraphics[scale=.16]{acc_Manuel}
+					\caption{Accuracy del modello sul training set; secondo utente}
+					\label{fig:acc_train_Manuel}
+				\end{center}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.16]{loss_Manuel}
+					\caption{Loss del modello sul training set}
+				\end{center}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.16]{val_acc_Manuel}
+					\caption{Accuracy del modello sul validation set}
+					\label{fig:acc_val_Manuel}
+				\end{center}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\begin{center}
+					\includegraphics[scale=.16]{val_loss_Manuel}
+					\caption{Loss del modello sul validation set}
+				\end{center}
+			\end{figure}
+			
+			\begin{figure}[H]
+				\begin{center}
 					\includegraphics[scale=.4]{measures_table_LSTM}
-					\caption{Report delle statistiche del modello}
+					\caption{Report delle statistiche del modello per il primo utente}
 				\end{center}
 			\end{figure}
 			\newpage
-			Particolarmente interessante è la figura sulle predizioni, che in sostanza rappresenta il task principale della PeterPen, ossia riconoscere una persona dai dati che si raccolgono mentre scrive, sfruttando un modello allenato su altri dati dello stesso utente ma ottenuti in un momento precedente. Dai test che abbiamo effettuato sembra che il modello riesca effettivamente a riconoscere l'utente, con un accuracy di quasi il 99\% (\cref{fig:prediction}). \\
-			Il modello inoltre non sembra essere afflitto da problemi di \textit{overfit} o \textit{underfit}, in quanto raggiunge accuracy molto simili nelle ultime epoche per il training set (\cref{fig:acc_train}) ed il validation set (\cref{fig:acc_val}), oltre al 99\% di accuracy sul nuovo set di parole come scritto sopra. \\
+			Particolarmente interessante è la figura sulle predizioni, che in sostanza rappresenta il task principale della PeterPen, ossia riconoscere una persona dai dati che si raccolgono mentre scrive, sfruttando un modello allenato su altri dati dello stesso utente ma ottenuti in un momento precedente. Dai test che abbiamo effettuato sembra che il modello riesca effettivamente a riconoscere il primo utente, con una precision di quasi il 99\% (\cref{fig:prediction}). \\
+			Il modello inoltre non sembra essere afflitto da problemi di \textit{overfit} o \textit{underfit}, in quanto raggiunge accuracy molto simili nelle ultime epoche per il training set (\cref{fig:acc_train_Antonio}, \cref{fig:acc_train_Manuel}) ed il validation set (\cref{fig:acc_val_Antonio}, \cref{fig:acc_val_Manuel}). \\
 
 
 \chapter{Lavori futuri}
