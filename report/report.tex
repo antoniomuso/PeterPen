@@ -163,7 +163,7 @@
 		\end{algorithm}
 		
 		L'algoritmo costruisce una matrice $ n \times m $, dove $ n $ ed $ m $ sono rispettivamente le lunghezze delle due sequenze, e riempie ogni cella $ i, j $ della matrice con la distanza minima per raggiungerla dalla cella $ [0, 0] $; l'output è dato quindi dal valore nella cella $ [n, m] $. Si può chiaramente osservare che la complessità dell'algoritmo è $ O(NM) $\\
-		L'algoritmo è stato implementato in due versioni; per la prima, che esegue l'algoritmo sopra scritto, abbiamo usato la libreria disponibile su GitHub al seguente link: \href{https://github.com/pierre-rouanet/dtw}{github.com/pierre-rouanet/dtw}. La seconda invece consiste in un'approssimazione dell'algoritmo, che ha un'esecuzione più rapida (ha una complessità di $ O(N + M) $) ma può chiaramente portare a performance peggiori; per la libreria abbiamo usato la seguente, disponibile su GitHub: \href{https://github.com/rtavenar/cydtw}{ithub.com/rtavenar/cydtw}. In seguito ci riferiremo a questa versione con il nome di \textit{Fast}-DTW (FDTW).
+		L'algoritmo è stato implementato in due versioni; per la prima, che esegue l'algoritmo sopra scritto, abbiamo usato la libreria disponibile su GitHub al seguente link: \href{https://github.com/pierre-rouanet/dtw}{github.com/pierre-rouanet/dtw}. La seconda invece consiste in un'approssimazione dell'algoritmo, che ha un'esecuzione più rapida (ha una complessità di $ O(N + M) $) ma può chiaramente portare a performance peggiori; per la libreria abbiamo usato la seguente, disponibile su GitHub: \href{https://github.com/rtavenar/cydtw}{github.com/rtavenar/cydtw}. In seguito ci riferiremo a questa versione con il nome di \textit{Fast}-DTW (FDTW).
 		
 		\newpage
 		
@@ -295,12 +295,12 @@
 		
 		\subsubsection{FDTW}
 			Con il \textit{Fast}-DTW  abbiamo potuto effettuare molti più test. \\ 
-			La nostra ipotesi che avesse performance peggiori del DTW è stata confermata, tuttavia abbiamo osservato che questo fatto è dipeso in gran parte dalla qualità dei dati, ossia da quanto rumore ci fosse al loro interno. In pratica, l'FDTW accentua le problematiche del DTW, ossia che non può "correggere" dati errati. Se un utente scrive in modo molto diverso la stessa parola, questi algoritmi che ne analizzano i segnali chiaramente avranno performance peggiori, mentre un algoritmo di deep learning può riuscire a comprendere che la persona è sempre la stessa, nonostante i dati siano piuttosto diversi fra di loro. Per la "vicinanza" fra due parole $ s_1, s_2 $ abbiamo usato l'equazione $ \frac{1}{1 + d(s_1, s_2)} $ in questo caso.
+			La nostra ipotesi che avesse performance peggiori del DTW è stata confermata, tuttavia abbiamo osservato che questo fatto è dipeso in gran parte dalla qualità dei dati, ossia da quanto rumore ci fosse al loro interno. In pratica, l'FDTW accentua le problematiche del DTW, ossia che non può "correggere" dati errati. Se un utente scrive in modo molto diverso la stessa parola, questi algoritmi che ne analizzano i segnali chiaramente avranno performance peggiori, mentre un algoritmo di deep learning può riuscire a comprendere che la persona è sempre la stessa, nonostante i dati siano piuttosto diversi fra di loro. Per la "vicinanza" fra due parole $ s_1, s_2 $ abbiamo usato il rapporto $ \frac{1}{1 + d(s_1, s_2)} $ in questo caso.
 			
 			\begin{figure}[H]
 				\begin{center}
 					\includegraphics[scale=.35]{ROC_FDTW_Giovanni}
-					\caption{Curva ROC di uno dei casi in cui l'FDTW ha ottenuto performance migliori, AUC $ \cong ??? $}
+					\caption{Curva ROC di uno dei casi in cui l'FDTW ha ottenuto performance migliori;\\ AUC $ \cong 0.99 $}
 				\end{center}
 			\end{figure}
 			
@@ -321,7 +321,7 @@
 			\begin{figure}[H]
 				\begin{center}
 					\includegraphics[scale=.35]{ROC_FDTW_Dario}
-					\caption{Curva ROC di uno dei casi in cui l'FDTW ha ottenuto performance peggiori, AUC $ \cong ??? $}
+					\caption{Curva ROC di uno dei casi in cui l'FDTW ha ottenuto performance peggiori;\\ AUC $ \cong 0.60 $}
 				\end{center}
 			\end{figure}
 			
@@ -335,7 +335,7 @@
 			\begin{figure}[H]
 				\begin{center}
 					\includegraphics[scale=.35]{fpr_fnr_FDTW_Dario}
-					\caption{Curve di FPR e FNR dello stesso utente, l'EER è poco meno di $ 0.5 $[!!!] ed il relativo threshold è circa $ 0.3 $}
+					\caption{Curve di FPR e FNR dello stesso utente, l'EER è poco meno di $ 0.5 $ ed il relativo threshold è circa $ 0.3 $}
 				\end{center}
 			\end{figure}
 
