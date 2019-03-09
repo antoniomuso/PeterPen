@@ -1,0 +1,18 @@
+\BOOKMARK [0][-]{chapter.1}{Architecture}{}% 1
+\BOOKMARK [1][-]{section.1.1}{PeterPen}{chapter.1}% 2
+\BOOKMARK [2][-]{subsection.1.1.1}{Acquisition protocol}{section.1.1}% 3
+\BOOKMARK [2][-]{subsection.1.1.2}{Pen source code}{section.1.1}% 4
+\BOOKMARK [1][-]{section.1.2}{Server}{chapter.1}% 5
+\BOOKMARK [2][-]{subsection.1.2.1}{JSON file}{section.1.2}% 6
+\BOOKMARK [0][-]{chapter.2}{Classification}{}% 7
+\BOOKMARK [1][-]{section.2.1}{Preprocessing}{chapter.2}% 8
+\BOOKMARK [2][-]{subsection.2.1.1}{Normalization}{section.2.1}% 9
+\BOOKMARK [1][-]{section.2.2}{DTW}{chapter.2}% 10
+\BOOKMARK [1][-]{section.2.3}{LSTM}{chapter.2}% 11
+\BOOKMARK [2][-]{subsection.2.3.1}{Model architecture}{section.2.3}% 12
+\BOOKMARK [0][-]{chapter.3}{Training and testing}{}% 13
+\BOOKMARK [1][-]{section.3.1}{Training}{chapter.3}% 14
+\BOOKMARK [1][-]{section.3.2}{Testing}{chapter.3}% 15
+\BOOKMARK [2][-]{subsection.3.2.1}{DTW}{section.3.2}% 16
+\BOOKMARK [2][-]{subsection.3.2.2}{LSTM}{section.3.2}% 17
+\BOOKMARK [0][-]{chapter.4}{Future works}{}% 18

@@ -19,7 +19,7 @@
 \author{Dario Montagnini, Antonio Musolino, \\Manuel Prandini, Giovanni Varricchione}
 \date{}
 
-\graphicspath{ {images/} }
+\graphicspath{ {../images/} }
 
 \begin{document}
 
@@ -39,18 +39,18 @@
 	Il tratto è principalmente influenzato da caratteristiche quali la calligrafia, la pressione esercitata e l'inclinazione della penna durante la scrittura.
 \subsection*{Stato dell'arte}
 	Tipicamente i sistemi di riconoscimento della scrittura si basano sul riconoscimento della firma dell'utente (ad esempio Karouni et al. \cite{Karouni15}). Tali sistemi sono anche detti di "\textit{signature recognition}", l'idea alla base di quest'approccio è che la firma varia notevolmente da individuo a individuo e quindi può essere sfruttata come tratto identificativo. Naturalmente, esistono anche sistemi che permettono il riconoscimento utilizzando qualsiasi parola, in questo caso si parla di "\textit{handwriting recognition}". Mentre i primi sono vulnerabili ad attacchi di \textit{spoofing}, i secondi sono più resistenti ma potrebbero avere performance più basse. \\
-	Ci sono due approcci principali al riconoscimento della scrittura: il primo, detto "\textit{statico}" o "\textit{off-line}", si basa su tecniche di \textit{image processing}. La firma viene catturata e poi trasformata in un'immagine, che successivamente sarà analizzata dal modello (esempi sono Sharif et al.\cite{Sharif18} e Souza V., Oliveira A. e Sabourin R. \cite{Souza18}). Il secondo approccio, detto "\textit{dinamico}" o "\textit{on-line}", si basa invece sui segnali che vengono catturati tramite dei sensori posti su una penna. Tipici segnali analizzati sono la pressione, l'accelerazione e la rotazione, in quanto caratterizzano la scrittura. In genere, quest'ultimi sono più performanti rispetto ai primi. \\
+	Ci sono due approcci principali al riconoscimento della scrittura: il primo, detto "\textit{statico}" o "\textit{off-line}", si basa su tecniche di \textit{image processing}. La parola scritta viene catturata e poi trasformata in un'immagine, che successivamente sarà analizzata dal modello (esempi sono Sharif et al.\cite{Sharif18} e Souza V., Oliveira A. e Sabourin R. \cite{Souza18}). Il secondo approccio, detto "\textit{dinamico}" o "\textit{on-line}", si basa invece sui segnali che vengono catturati tramite dei sensori posti su una penna. Tipici segnali analizzati sono la pressione, l'accelerazione e la rotazione, in quanto caratterizzano la scrittura. In genere, quest'ultimi sono più performanti rispetto ai primi. \\
 	Un approccio dinamico molto simile a quello che verrà presentato è stato proposto con la BioPen da De Marsico M., Ponzi F., Scozzafava F. e Tortora G. \cite{DeMarsico18}, tuttavia vi sono delle differenze nei modelli proposti. Innanzitutto, nella PeterPen il modulo di Machine Learning usa le LSTM, mentre nella BioPen le SVM. La pressione, inoltre, è usata in modi diversi: mentre nella BioPen veniva misurata la pressione posta dall'utente nella presa della penna, nella PeterPen viene misurata la pressione esercitata sulla punta durante la scrittura. Questo ci ha permesso anche di automatizzare il processo di raccolta dei dati, considerando solo i periodi in cui la pressione misurata superava un certo threshold. Chiaramente questi due approcci all'utilizzo della pressione hanno anche ripercussioni differenti nel riconoscimento dell'utente. 
 
 	
-\chapter{Architettura del Sistema}
+\chapter{Architettura del sistema}
 	\begin{figure}[H]
 		\begin{center}
 			\includegraphics[scale=.25]{architettura}
 			\caption{Schema dell'architettura}
 		\end{center}
 	\end{figure}		
-	L'architettura del sistema è formata da 4 componenti: la penna, un server per l'acquisizione dei dati, e i moduli di \textit{preprocessing} dei dati e di classificazione. La penna raccoglie i dati tramite i sensori e li invia al server attraverso il modulo Wi-Fi del chip. I dati vengono salvati in appositi file JSON sul server (ad ogni utilizzo della penna è associato un file diverso) e possono essere quindi usati dal modulo di \textit{preprocessing}. Quest'ultimo si occupa principalmente di normalizzare i dati, in modo da renderli utilizzabili dai modelli di classificazione. Un modulo di classificazione è composto da una rete neurale che utilizza delle LSTM, mentre l'altro è basato sull'algoritmo \textit{Dynamic Time Warping}.
+	L'architettura del sistema è formata da 4 componenti: la penna, un server per l'acquisizione dei dati e i moduli di \textit{preprocessing} dei dati e di classificazione. La penna raccoglie i dati tramite i sensori e li invia al server attraverso il modulo Wi-Fi del chip. I dati vengono salvati in appositi file JSON sul server (ad ogni utilizzo della penna è associato un file diverso) e possono essere quindi usati dal modulo di \textit{preprocessing}. Quest'ultimo si occupa principalmente di normalizzare i dati, in modo da renderli utilizzabili dai modelli di classificazione. Un modulo di classificazione è composto da una rete neurale che utilizza delle LSTM, mentre l'altro è basato sull'algoritmo \textit{Dynamic Time Warping}.
 
 	\section{PeterPen}
 		La penna è composta dal seguente hardware:
@@ -93,12 +93,12 @@
 
 		
 		\subsection{Protocollo di acquisizione}
-			È stato ideato un protocollo per semplificare l'acquisizione e l'invio dei dati. All'accensione della penna (che può essere alimentata o tramite un cavo USB o tramite batteria, usandone o una da 9V (\cref{fig:circuito}) o una da 3.3V o 3.6V, alimentandola però tramite il pin 3v3) il LED lampeggia durante la connessione alla rete e al server, o in caso di errore. Una volta connessa, il LED smette di lampeggiare e rimane acceso, questo indica all'utente che può iniziare a scrivere. Durante la scrittura la luce rimane spenta e, se non viene rilevata alcuna pressione per più di 2 secondi, si riaccende indicando la fine della scrittura della parola precedente e l'invio dei dati. È stato inoltre impostato come tempo massimo di scrittura 10 secondi, nel caso in cui l'utente superi tale limite il LED comincerà a lampeggiare, per segnalare l'errore e nessun dato sarà inviato.
+			È stato ideato un protocollo per semplificare l'acquisizione e l'invio dei dati. All'accensione della penna, che può essere alimentata o tramite un cavo USB o tramite batteria, usandone o una da 9V (\cref{fig:circuito}) o una da 3.3V o 3.6V, alimentandola però tramite il pin 3v3, il LED lampeggia durante la connessione alla rete e al server, o in caso di errore. Una volta connessa, il LED smette di lampeggiare e rimane acceso, questo indica all'utente che può iniziare a scrivere. Durante la scrittura la luce rimane spenta e, se non viene rilevata alcuna pressione per più di 2 secondi, si riaccende indicando la fine della scrittura della parola precedente e l'invio dei dati. È stato inoltre impostato come tempo massimo di scrittura 10 secondi, nel caso in cui l'utente superi tale limite il LED comincerà a lampeggiare per segnalare l'errore, e nessun dato sarà inviato.
 		
 		\subsection{Codice sorgente della penna}
 			Il microcontrollore ESP8266 è programmato con un linguaggio derivato dal C, lo stesso che viene usato nella programmazione dei chip Arduino. Tale linguaggio richiede necessariamente l'implementazione di due funzioni in ogni programma. \\
 			La prima, \verb|void setup()|, è eseguita un'unica volta all'inizio dell'esecuzione, ed è utilizzata per inizializzare le variabili. La seconda, \verb|void loop()|, rappresenta il kernel del programma ed è eseguito continuamente finché il chip è attivo, nel nostro caso l'esecuzione avviene ogni 10 millisecondi. \\
-			Nel nostro caso, nella funzione \verb|setup|, vengono invocate altre due funzioni: \verb|mpu6050Begin| che inizializza il chip del giroscopio e dell'accelerometro e \verb|connect| che si occupa di effettuare la connessione al server. La funzione \verb|loop| ad ogni iterazione legge il valore della pressione e, in base allo stato (che è uno fra \verb|READY|, \verb|WRITING| e \verb|ERROR|) e alla variabile \verb|counter_writing| si comporterà diversamente. \\ Se la pressione registrata è sufficiente e lo stato è \verb|READY|, allora la penna passa allo stato \verb|WRITING|, acquisisce i dati e inizializza il contatore \\ \verb|counter_writing|. Invece, se la pressione è maggiore di un certo threshold, lo stato è \verb|WRITING| e sono passati meno di 10 secondi dall'inizio della scrittura allora acquisiti i dati dai sensori; nel caso in cui sono passati 10 o più secondi allora la penna si sposterà nello stato \verb|ERROR|. Infine, se lo stato è \verb|WRITING| e sono passati almeno 2 secondi da quando non si rileva abbastanza pressione, vengono inviati i dati al server e viene impostato lo stato \verb|READY|. 
+			Nel nostro caso, nella funzione \verb|setup|, vengono invocate altre due funzioni: \verb|mpu6050Begin| che inizializza il chip del giroscopio e dell'accelerometro e \verb|connect| che si occupa di effettuare la connessione al server. La funzione \verb|loop| ad ogni iterazione legge il valore della pressione e, in base allo stato (che è uno fra \verb|READY|, \verb|WRITING| e \verb|ERROR|) e alla variabile \verb|counter_writing| si comporterà diversamente. \\ Se la pressione registrata è sufficiente e lo stato è \verb|READY|, allora la penna passa allo stato \verb|WRITING|, acquisisce i dati e inizializza il contatore \\ \verb|counter_writing|. Se la pressione è maggiore di un certo threshold, lo stato è \verb|WRITING| e sono passati meno di 10 secondi dall'inizio della scrittura, allora acquisisce i dati dai sensori; invece, nel caso in cui sono passati 10 o più secondi, allora la penna si sposterà nello stato \verb|ERROR|. Infine, se lo stato è \verb|WRITING| e sono passati almeno 2 secondi da quando non si rileva abbastanza pressione, vengono inviati i dati al server e viene impostato lo stato \verb|READY|. 
 			
 	\section{Server}
 		Il server è programmato in Node.js, in ascolto sulla porta 8080 mediante una socket TCP. Ad ogni nuova connessione crea un nuovo file JSON all'interno della quale andrà a salvare tutti i dati ricevuti dalla PeterPen, effettuandone precedentemente il parsing. Nel momento in cui la sessione viene chiusa, il server si occupa di gestire la chiusura del file relativo alla stessa.
@@ -109,15 +109,15 @@
 			\begin{enumerate}
 				\setlength\itemsep{.1em}
 				\item componenti $ x, y $ e $ z $ dell'accelerometro;
-				\item componenti $ x, y $ e $ z $ del giroscopio;
-				\item valore della pressione.
+				\item valore della pressione;
+				\item componenti $ x, y $ e $ z $ del giroscopio.
 			\end{enumerate}
 
 
 \chapter{Classificazione}
 
 	\section{Preprocessing}
-		Nella fase di preprocessing i dati sono stati normalizzati, effettuando il rescaling delle singole feature, ed è stato aggiunto del padding per rendere i vettori delle singole parole lunghi esattamente 1000. Il padding è stato eseguito per entrambi i modelli, mentre il rescaling solo per il DTW (poiché peggiorava le prestazioni dell'LSTM, abbiamo deciso di non usare i dati scalati in quel caso). \\
+		Nella fase di preprocessing i dati sono stati normalizzati, effettuando il rescaling delle singole feature, ed è stato aggiunto del padding per rendere i vettori delle singole parole lunghi esattamente 1000. Il padding è stato aggiunto per entrambi i modelli, mentre il rescaling solo per il DTW; poiché peggiorava le prestazioni della rete neurale, abbiamo deciso di non usare i dati scalati in quel caso. \\
 		
 		\subsection{Normalizzazione}
 			I  dati sono stati normalizzati utilizzando la funzione di rescaling: 
@@ -126,20 +126,20 @@
 			\begin{itemize}
 				\setlength\itemsep{.01em}
 				\item $ \pm 250 $ per i dati dell'accelerometro;
-				\item $ \pm 2 $ per i dati del giroscopio;
-				\item $ 0 $ e $ 1024 $ per i dati del sensore di pressione.
+				\item $ 0 $ e $ 1024 $ per i dati del sensore di pressione;
+				\item $ \pm 2 $ per i dati del giroscopio.
 			\end{itemize}
 	
 	\section{DTW}
-		L'algoritmo DTW (\textit{Dynamic Time Warping}) è un algoritmo di programmazione dinamica che permette di misurare la similarità fra due sequenze temporali; la particolarità dell'algoritmo è che riconosce anche sequenze che variano in velocità. Nel nostro caso, un esempio immediato è dato da un individuo che, scrivendo la stessa parola, impiega meno tempo a scriverla nel primo caso che nel secondo. \\
+		L'algoritmo DTW (\textit{Dynamic Time Warping}) è un algoritmo di programmazione dinamica che permette di misurare la similarità fra due sequenze temporali; la particolarità dell'algoritmo è che riconosce anche sequenze che variano in lunghezza. Nel nostro caso, un esempio immediato è dato da un individuo che, scrivendo la stessa parola, impiega meno tempo a scriverla nel primo caso che nel secondo. \\
 		Il DTW calcola l'\textit{optimal matching} fra due sequenze con le seguenti regole e restrizioni:
 		\begin{enumerate}
 			\item ogni elemento di una sequenza deve essere associato ad almeno un elemento dell'altra (ma non necessariamente ad uno solo);
 			\item il primo elemento della prima sequenza deve essere associato al primo della seconda;
 			\item l'ultimo elemento della prima sequenza deve essere associato all'ultimo della seconda;
-			\item il matching deve essere \textit{monotono} e \textit{crescente}, ossia, dati due indici della prima sequenza $ i, j $ tali che $ i < j $, allora non possono esistere due indici della sequenza $ k, q $ tali che $ k < q $, $ q $ è stato associato a $ i $ e $ k $ è stato associato a $ j $.
+			\item il matching deve essere \textit{monotono} e \textit{crescente}, ossia, dati due indici della prima sequenza $ i, j $ tali che $ i < j $, allora non possono esistere due indici della seconda sequenza $ k, q $ tali che $ k < q $ e $ q $ è stato associato a $ i $ e $ k $ è stato associato a $ j $.
 		\end{enumerate}
-		Ad ogni \textit{matching} è associato un costo (tipicamente la somma delle distanze euclidee fra ogni coppia di indici associati, che abbiamo usato nella nostra implementazione), e quello ottimale è quello il cui costo è minimo.
+		Ad ogni \textit{matching} è associato un costo, tipicamente la somma delle distanze euclidee fra ogni coppia di indici associati (che abbiamo usato nella nostra implementazione), e quello ottimale è quello il cui costo è minimo.
 		\begin{algorithm}[h]
 			\SetAlgoLined
 			\caption{DTW}
@@ -162,8 +162,8 @@
 				$ \textit{return } \text{DTW}[n, m] $
 		\end{algorithm}
 		
-		L'algoritmo costruisce una matrice $ n \times m $, dove $ n $ ed $ m $ sono rispettivamente le lunghezze delle due sequenze, e riempie ogni cella $ i, j $ della matrice con la distanza minima per raggiungerla dalla cella $ [0, 0] $; l'output è dato quindi dal valore nella cella $ [n, m] $. Si può chiaramente osservare che la complessità dell'algoritmo è $ O(NM) $\\
-		L'algoritmo è stato implementato in due versioni; per la prima, che esegue l'algoritmo sopra scritto, abbiamo usato la libreria disponibile su GitHub al seguente link: \href{https://github.com/pierre-rouanet/dtw}{github.com/pierre-rouanet/dtw}. La seconda invece consiste in un'approssimazione dell'algoritmo, che ha un'esecuzione più rapida (ha una complessità di $ O(N + M) $) ma può chiaramente portare a performance peggiori; per la libreria abbiamo usato la seguente, disponibile su GitHub: \href{https://github.com/rtavenar/cydtw}{github.com/rtavenar/cydtw}. In seguito ci riferiremo a questa versione con il nome di \textit{Fast}-DTW (FDTW).
+		L'algoritmo costruisce una matrice $ n \times m $, dove $ n $ ed $ m $ sono rispettivamente le lunghezze delle due sequenze, e riempie ogni cella $ i, j $ della matrice con il costo minimo per raggiungerla dalla cella $ [0, 0] $; l'output è dato quindi dal valore nella cella $ [n, m] $. Si può chiaramente osservare che la complessità dell'algoritmo è $ O(nm) $.\\
+		L'algoritmo è stato implementato in due versioni; per la prima, che esegue l'algoritmo sopra scritto, abbiamo usato la libreria disponibile su GitHub al seguente link: \href{https://github.com/pierre-rouanet/dtw}{github.com/pierre-rouanet/dtw}. La seconda invece consiste in un'approssimazione dell'algoritmo, che ha un'esecuzione più rapida ma può chiaramente portare a performance peggiori; per la libreria abbiamo usato la seguente, disponibile su GitHub: \href{https://github.com/rtavenar/cydtw}{github.com/rtavenar/cydtw}. In seguito ci riferiremo a questa versione con il nome di \textit{Fast}-DTW (FDTW).
 		
 		\newpage
 		
@@ -196,7 +196,7 @@
 			\item lo strato più a destra è detto "\textit{output gate}", e modifica l'output finale della rete.
 		\end{itemize}
 		
-		\subsection{Architettura del Modello}
+		\subsection{Architettura del modello}
 			Il modello di \textit{deep learning} implementato è formato da 5 strati, di cui 2 LSTM (\cref{fig:model}):
 			\begin{enumerate}
 				\item un primo strato \verb|Masking|;
@@ -206,10 +206,10 @@
 			\end{enumerate}
 			
 				\subsubsection{Masking}
-					Lo strato \verb|Masking| ha come obiettivo quello di eliminare il padding, in modo da rendere meno costoso il learning.
+					Lo strato \verb|Masking| ha come obiettivo quello di eliminare il padding, in modo da rendere meno costoso il learning. Va notato che abbiamo usato il padding anche per il modello di \textit{deep learning} in quanto in questo modo è stato possibile passare un qualsiasi vettore in input ad esso, eliminando quindi il problema della lunghezza variabile (che invece sarà sempre 1000 grazie al padding).
 					
 				\subsubsection{LSTM}
-					I due strati \verb|LSTM| sono consecutivi, il primo ha l'opzione \verb|return_sequences| attivata, in modo da dare in output allo strato successivo tutti i vettori della sequenza, e non solo l'ultimo. Inizialmente utilizzavamo soltanto uno strato \verb|LSTM|, tuttavia abbiamo osservato che questa versione con due strati offre performance migliori.; inoltre, l'aggiunta del secondo strato, ci ha permesso anche di poter avere uno strato che restituisse in output tutta la sequenza elaborata, in modo da poterla analizzare in un altro strato \verb|LSTM|.
+					I due strati \verb|LSTM| sono consecutivi, il primo ha l'opzione \verb|return_sequences| attivata, in modo da dare in output allo strato successivo tutti i vettori della sequenza, e non solo l'ultimo. Inizialmente utilizzavamo soltanto uno strato \verb|LSTM|, tuttavia abbiamo osservato che questa versione con due strati offre performance migliori; inoltre, l'aggiunta del secondo strato, ci ha permesso anche di poter avere uno strato che restituisse in output tutta la sequenza elaborata, in modo da poterla analizzare in un altro strato \verb|LSTM|.
 					
 				\subsubsection{Dropout}
 					Lo strato \verb|Dropout| modifica alcuni input in modo casuale settandoli a $ 0 $, per tentare di prevenire l'\textit{overfitting}. La probabilità di impostare un input a $ 0 $ è $ 0.5 $.
@@ -235,7 +235,7 @@
 		
 
 
-\chapter{Training e Test}
+\chapter{Training e test}
 	Il dataset raccolto contiene parole scritte da 23 persone diverse, per un totale di 845 sample. La parola scelta da far scrivere agli utenti è "Computer", in corsivo. \\
 	Sia il training che i vari test sono stati eseguiti su un computer fisico con le seguenti specifiche:
 	\begin{itemize}
@@ -245,7 +245,7 @@
 	\end{itemize}
 	
 	\subsubsection*{Docker}
-	Al fine di poter sfruttare la potenza calcolatrice della GPU abbiamo utilizzato il sistema Docker. Docker è un sistema di virtualizzazione che permette di creare delle macchine virtuali, detti "\textit{container}", che condividono il kernel (in modo da offrire prestazioni migliori rispetto ad una semplice macchina virtuale). Quel che abbiamo fatto è stato creare un container al cui interno viene eseguito un Jupyter Notebook. Inoltre, ci ha permesso anche di facilitare il deploy, rendendolo possibile su qualsiasi macchina (poiché i Jupyter Notebook possono essere eseguiti in remoto) e fornendo anche maggior protezione da eventuali attacchi informatici (in quanto il programma viene eseguito all'interno di una macchina virtuale). 
+		Al fine di poter sfruttare la potenza calcolatrice della GPU abbiamo utilizzato il sistema Docker. Docker è un sistema di virtualizzazione che permette di creare delle macchine virtuali, detti "\textit{container}", che condividono il kernel (in modo da offrire prestazioni migliori rispetto ad una semplice macchina virtuale). Quel che abbiamo fatto è stato creare un container al cui interno viene eseguito un Jupyter Notebook. Inoltre, ci ha permesso anche di facilitare il deploy, rendendolo possibile su qualsiasi macchina (poiché i Jupyter Notebook possono essere eseguiti in remoto) e fornendo anche maggior protezione da eventuali attacchi informatici (in quanto il programma viene eseguito all'interno di una macchina virtuale). 
 	
 	\section{Training}
 		È stato effettuato un training apposito per riconoscere alcuni degli utenti che sono stati registrati, generandone i relativi modelli. \\ 
@@ -342,7 +342,7 @@
 		
 		\subsection{LSTM}
 		
-			Il modello basato sulle LSTM ha raggiunto ottime prestazioni in poche epoch di training, tenendo comunque in considerazione che il dataset è relativamente piccolo. Includiamo solo uno dei modelli che abbiamo allenato ed i relativi test effettuati, in quanto altri esempi risulterebbero ridondanti. Verranno riportati i grafici ottenuti allenando il modello su due diversi utenti. In entrambi i casi il modello ha ottenuto buoni risultati, raggiungendo una precisione di almeno il 98\%, sia nei set di training che nei set di validation; va notato che abbiamo raccolto più dati dal primo utente, il che potrebbe spiegare le migliori performance rispetto al secondo. 
+			Il modello basato sulle LSTM ha raggiunto ottime prestazioni in poche epoch di training, tenendo comunque in considerazione che il dataset è relativamente piccolo. Includiamo solo due dei modelli che abbiamo allenato ed i relativi test effettuati, in quanto altri esempi risulterebbero superflui. In entrambi i casi il modello ha ottenuto buoni risultati, raggiungendo una precisione di almeno il 98\%, sia nei set di training che nei set di validation; va notato che abbiamo raccolto più dati dal primo utente, il che potrebbe spiegare le migliori performance rispetto al secondo. 
 			\begin{figure}[H]
 				\begin{center}
 					\includegraphics[scale=.1865]{acc_Antonio}
@@ -440,7 +440,7 @@
 			\includegraphics[scale=.3]{scrittura_antonio}
 			\includegraphics[scale=.3]{scrittura_manuel}
 			\includegraphics[scale=.3]{scrittura_giovanni}
-			\caption{ Come si può osservare, il modello rifiuta (correttamente) gli impostori, mentre circa nel 10\% dei casi riesce a riconoscere correttamente l'utente, nonostante non abbia mai visto quella sua  parola}
+			\caption{Come si può osservare, il modello rifiuta (correttamente) gli impostori, mentre circa nel 10\% dei casi riesce a riconoscere correttamente l'utente, nonostante non abbia mai visto quella sua  parola}
 			\label{fig:ciao}
 		\end{center}
 	\end{figure}

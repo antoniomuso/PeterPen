@@ -1,4 +1,4 @@
-\BOOKMARK [0][-]{chapter.1}{Architettura del Sistema}{}% 1
+\BOOKMARK [0][-]{chapter.1}{Architettura del sistema}{}% 1
 \BOOKMARK [1][-]{section.1.1}{PeterPen}{chapter.1}% 2
 \BOOKMARK [2][-]{subsection.1.1.1}{Protocollo di acquisizione}{section.1.1}% 3
 \BOOKMARK [2][-]{subsection.1.1.2}{Codice sorgente della penna}{section.1.1}% 4
@@ -9,8 +9,8 @@
 \BOOKMARK [2][-]{subsection.2.1.1}{Normalizzazione}{section.2.1}% 9
 \BOOKMARK [1][-]{section.2.2}{DTW}{chapter.2}% 10
 \BOOKMARK [1][-]{section.2.3}{LSTM}{chapter.2}% 11
-\BOOKMARK [2][-]{subsection.2.3.1}{Architettura del Modello}{section.2.3}% 12
-\BOOKMARK [0][-]{chapter.3}{Training e Test}{}% 13
+\BOOKMARK [2][-]{subsection.2.3.1}{Architettura del modello}{section.2.3}% 12
+\BOOKMARK [0][-]{chapter.3}{Training e test}{}% 13
 \BOOKMARK [1][-]{section.3.1}{Training}{chapter.3}% 14
 \BOOKMARK [1][-]{section.3.2}{Test}{chapter.3}% 15
 \BOOKMARK [2][-]{subsection.3.2.1}{DTW}{section.3.2}% 16
