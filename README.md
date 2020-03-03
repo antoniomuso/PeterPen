@@ -1,5 +1,5 @@
 # PeterPen
-The Peter's Pen is a project for handwriting recognition.we designed a pen with which we can capture data while a person
+The Peter's Pen is a project for handwriting recognition. We designed a pen with which we can capture data while a person
 is writing, and then send it to a server through a Wi-Fi connection. The pen has been made
 with affordable chips and its body with a 3D printer. Two recognition systems have been
 implemented, one based on deep learning and the other on signal distances. On the available
