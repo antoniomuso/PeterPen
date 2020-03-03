@@ -25,6 +25,7 @@ The system architecture is made out of 4 elements: the pen, a server which acqui
 - two resistors
 - a 9V battery
 - a PLA case
+
 The ESP8266, the main chip, consists of a microcontroller and a Wi-Fi module used to communicate with the server. The accelerometer and the gyroscope (both on a single chip), the force sensor and the LED are connected to this chip. The sensor is able to measure the force applied on the pen tip thanks to a spring. Right after the force sensor there is the accelerometer and
 ![Circuit](report/images/circuito.png)
 
