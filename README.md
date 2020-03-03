@@ -10,7 +10,7 @@ There is an italian version [here](report/IT/report.pdf).
 ![Pen design](report/images/design.jpeg)
 ### System Architecture
 The system architecture is made out of 4 elements: the pen, a server which acquires data and the preprocessing and classification modules. The pen gathers data through its sensors and sends them to the server via a Wi-Fi module, which is installed on its chip. JSON files are used to store such data on the server (to each ”writing session”, i.e. the writing of a single word, a file is associated) and can thus be used by the pre-processing module. This last one has the objective of normalizing data, in order to make them usable by the classifiers. There are two classification modules, the first is a Neural Network which uses LSTMs, and the second one is based on the Dynamic Time Warping algorithm.
-![Architecture](report/images/architettura.png)
+![Architecture](report/images/architettura2.png)
 
 ### Components and Circuit
 - NODE MCU ESP8266 chip;
